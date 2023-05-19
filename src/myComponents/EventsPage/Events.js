@@ -176,7 +176,7 @@ export default function Events(){
                                         title="Time"
                                         options={timeOptions}
                                         setSelectedOption={setSelectedTime}
-                                        isMulti={true}
+                                        isMulti={false}
                                     />
                                 </TabControl>
                             </div>
