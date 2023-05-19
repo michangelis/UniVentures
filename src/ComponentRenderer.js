@@ -102,7 +102,7 @@ import MiniCenteredFooter from "components/footers/MiniCenteredFooter.js";
 import HomePage from "./myComponents/HomePage/homepage";
 import Eventpage from "./myComponents/EventPage/Eventpage";
 import EventsPage from "./myComponents/EventsPage/Events";
-
+import Volunteer from "./myComponents/VolunteerPage/Volunteer";
 export const components = {
   landingPages: {
     HomePage: {
@@ -113,12 +113,17 @@ export const components = {
     Eventpage: {
       component: Eventpage,
       imageSrc: ServiceLandingPageImageSrc,
-      url: "/components/landingPages/Eventpage",
+      url: "/components/landingPages/Eventpage/:id",
     },
     Eventspage: {
       component: EventsPage,
       imageSrc: ServiceLandingPageImageSrc,
       url: "/components/landingPages/Eventspage",
+    },
+    VolunteerPage: {
+      component: Volunteer,
+      imageSrc: RestaurantLandingPageImageSrc,
+      url: "/components/landingPages/VolunteerPage",
     },
     RestaurantLandingPage: {
       component: RestaurantLandingPage,

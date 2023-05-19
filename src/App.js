@@ -103,6 +103,10 @@ import { css } from "styled-components/macro"; //eslint-disable-line
 import ComponentRenderer from "ComponentRenderer.js";
 import MainLandingPage from "MainLandingPage.js";
 import ThankYouPage from "ThankYouPage.js";
+import HomePage from "./myComponents/HomePage/homepage";
+import Eventpage from "./myComponents/EventPage/Eventpage";
+import EventsPage from "./myComponents/EventsPage/Events";
+import Volunteer from "./myComponents/VolunteerPage/Volunteer";
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
@@ -120,6 +124,10 @@ export default function App() {
           <Route path="/components/:type/:name" element={<ComponentRenderer />} />
           <Route path="/thank-you" element={<ThankYouPage />} />
           <Route path="/" element={<MainLandingPage />} />
+          <Route path="/home" element={<HomePage />} />
+          <Route path="/events" element={<EventsPage />} />
+          <Route path="/event/:id" element={<Eventpage />} />
+          <Route path="/volunteer/:id" element={<Volunteer />} />
         </Routes>
       </Router>
     </>

@@ -1,30 +1,26 @@
 import React from "react";
 import tw from "twin.macro";
 import AnimationRevealPage from "helpers/AnimationRevealPage.js";
-import Hero from "./EventHero";
+import Hero from "./VolunteerHero";
 import Features from "./SocialLinks";
-import FeatureStats from "./FeatureStats";
-import Testimonial from "./Testimonials";
-import FAQ from "./Faq";
 import Footer from "../Footer";
+import Positions from "./Positions";
+import ContactUs from "./ContactUs";
 import {useParams} from "react-router";
-const HighlightedText = tw.span`text-primary-500`
 
-export default function Eventpage(){
+const HighlightedText = tw.span`text-primary-500`;
+
+
+export default () => {
     const { id } = useParams();
     console.log(id);
     return (
         <AnimationRevealPage>
             <Hero/>
-            <FeatureStats/>
-            <Testimonial
-                heading={<>Words from the people who helped <HighlightedText>Organize</HighlightedText> the event</>}
-            />
+            <ContactUs/>
+            <Positions here={true}/>
             <Features
                 heading={<>Follow <HighlightedText>Them</HighlightedText>Around</>}
-            />
-            <FAQ
-                heading={<>Any <HighlightedText>Questions ?</HighlightedText></>}
             />
             <Footer />
         </AnimationRevealPage>
