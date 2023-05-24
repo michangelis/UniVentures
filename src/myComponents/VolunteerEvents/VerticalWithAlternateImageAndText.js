@@ -3,8 +3,10 @@ import styled from "styled-components";
 import tw from "twin.macro";
 import { ReactComponent as SvgDotPatternIcon } from "../../images/dot-pattern.svg";
 import { SectionHeading as HeadingTitle } from "../../components/misc/Headings.js";
+import { Carousel } from 'react-responsive-carousel';
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 
-const Container = tw.div`relative`;
+const Container = tw.div`relative mt-16`;
 
 const SingleColumn = tw.div`max-w-screen-xl mx-auto py-20 lg:py-24`;
 
@@ -40,6 +42,17 @@ const SvgDotPattern4 = tw(
   SvgDotPatternIcon
 )`absolute bottom-0 right-0 transform translate-x-20 rotate-90 -translate-y-24 -z-10 opacity-25 text-primary-500 fill-current w-24`;
 
+const CarouselContainer = styled.div`
+  ${tw`w-full md:w-3/5 mx-auto`}
+`;
+
+const CarouselCaption = styled.p`
+  ${tw`text-xl font-bold text-white`}
+`;
+
+const Caption = tw.div`bg-white text-2xl lg:text-3xl xl:text-4xl font-bold text-gray-900 mt-4 mb-4 text-center p-4 rounded-lg`;
+
+
 export default () => {
   const cards = [
     {
@@ -73,8 +86,39 @@ export default () => {
     }
   ];
 
+  const images = [
+    {imgSrc: "../../images/tedxathens.png"},
+    {imgSrc: "../../images/vol.webp"},
+    {imgSrc: "../../images/vol1.jpeg"},
+
+  ];
+
   return (
     <Container>
+      <CarouselContainer>
+        <Carousel
+            showThumbs={false}
+            infiniteLoop
+            useKeyboardArrows
+            autoPlay
+            dynamicHeight
+            emulateTouch
+        >
+          {images.map((card, index) => (
+              <div key={index}>
+                <img
+                    src={card.imgSrc}
+                    alt="Cannot display image"
+                    style={{
+                      height: '300px', // Set to desired height
+                      width: '100%', // Set to desired width
+                      objectFit: 'cover',
+                    }}
+                />
+              </div>
+          ))}
+        </Carousel>
+      </CarouselContainer>
       <SingleColumn>
         <HeadingInfoContainer>
           <HeadingTitle>Popular Events</HeadingTitle>
