@@ -95,3 +95,8 @@ export function getEvents(Name){
 }
 
 export default events;
+
+export function getDEvents(events, Name){
+    return events[Name];
+}
+

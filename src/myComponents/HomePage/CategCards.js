@@ -8,7 +8,7 @@ import { PrimaryButton as PrimaryButtonBase } from "components/misc/Buttons.js";
 import { ReactComponent as LocationIcon } from "feather-icons/dist/icons/map-pin.svg";
 import { ReactComponent as TimeIcon } from "feather-icons/dist/icons/clock.svg";
 import { ReactComponent as ArrowRightIcon } from "images/arrow-right-icon.svg";
-import events, {getEvents} from "./fakeEvents";
+import events, {getEvents, getDEvents} from "./fakeEvents";
 import {Link} from "react-router-dom";
 import axios from "axios";
 import {API_URL} from "../../api";
@@ -62,21 +62,18 @@ const CardMetaFeature = styled.div`
 const CardAction = tw(PrimaryButtonBase)`w-full mt-6`;
 
 export default function CategCards(props) {
-    const categArray = getEvents(props.id) || [];
-
-    const [categArr, setCategArr] = useState([]);
+    const [categArray, setCategArray] = useState([]);
 
     useEffect(() => {
         axios
             .get(API_URL + 'get_events_by_category/')
             .then(response => {
-                setCategArr(response.data)
+                setCategArray(getDEvents(response.data, props.id) || []);
             })
             .catch(error => {
                 console.log(error);
             });
-    }, []);
-
+    }, [props.id]);
 
 
     return (
