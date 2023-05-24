@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { motion } from "framer-motion";
 import tw from "twin.macro";
 import styled from "styled-components";
@@ -10,6 +10,8 @@ import { ReactComponent as StarIcon } from "images/star-icon.svg";
 import { ReactComponent as SvgDecoratorBlob1 } from "images/svg-decorator-blob-5.svg";
 import { ReactComponent as SvgDecoratorBlob2 } from "images/svg-decorator-blob-7.svg";
 import CategCards from "./CategCards";
+import axios from "axios";
+import {API_URL} from "../../api";
 
 
 const HeaderRow = tw.div`flex justify-between items-center flex-col xl:flex-row`;
@@ -59,87 +61,78 @@ const DecoratorBlob1 = styled(SvgDecoratorBlob1)`
 const DecoratorBlob2 = styled(SvgDecoratorBlob2)`
   ${tw`pointer-events-none -z-20 absolute left-0 bottom-0 h-80 w-80 opacity-15 transform -translate-x-2/3 text-primary-500`}
 `;
+const HighlightedText = tw.span`bg-primary-500 text-gray-100 px-4 transform -skew-x-12 inline-block`;
 
-export default ({
-                    heading = "Checkout the Menu",
-                    tabs = {
-                        StartUps: [
-                            {
-                                id: 1,
-                                name: "StarUps",
-                                desc: "Networking events that connect entrepreneurs with investors, mentors, and other like-minded individuals to discuss business ideas, strategies, and funding opportunities."
+export default function Categories() {
 
-                            }
-                        ],
-                        Tech: [
-                            {
-                                id: 2,
-                                name: "Technology",
-                                desc: "Conferences and exhibitions that showcase the latest advancements in technology, including emerging fields such as artificial intelligence, blockchain, and virtual reality."
-                            }
-                        ],
-                        TEDxEvents: [
-                            {
-                                id: 3,
-                                name: "TEDxEvents",
-                                desc: "Inspirational speeches by thought leaders from various fields, covering topics ranging from technology, science, and culture to global issues and personal growth."
-                            }
-
-                        ],
-                        Uni: [
-                            {
-                                id: 4,
-                                name: "University",
-                                desc: "Educational events hosted by universities, featuring speakers, workshops, and networking opportunities for students, professionals, and academics, covering various fields of study and research."
-                            }
-                        ],
-                    }
-                }) => {
-
+    const [tabs, setTabs] = useState({});
     const tabsKeys = Object.keys(tabs);
-    const [activeTab, setActiveTab] = useState(tabsKeys[0]);
+
+
+    useEffect(() => {
+        axios
+            .get(API_URL + 'get_first_four_categories/')
+            .then(response => {
+                setTabs(response.data);
+                const firstKey = Object.keys(response.data)[0];
+                setActiveTab(firstKey);
+                console.log(response.data);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }, []);
+
+        const [activeTab, setActiveTab] = useState(tabsKeys.length > 0 ? tabsKeys[0] : null);
 
     return (
         <Container>
             <ContentWithPaddingXl>
                 <HeaderRow>
-                    <Header>{heading}</Header>
+                    <Header>Checkout our <HighlightedText>Event Categories</HighlightedText></Header>
                     <TabsControl>
-                        {Object.keys(tabs).map((tabName, index) => (
-                            <TabControl key={index} active={activeTab === tabName} onClick={() => setActiveTab(tabName)}>
-                                {tabName}
-                            </TabControl>
-                        ))}
+                        {tabsKeys.length > 0 && (
+                            tabsKeys.map((tabName, index) => (
+                                <TabControl key={index} active={activeTab === tabName} onClick={() => setActiveTab(tabName)}>
+                                    {tabName}
+                                </TabControl>
+                            ))
+                        )}
                     </TabsControl>
                 </HeaderRow>
-
-                {tabsKeys.map((tabKey, index) => (
-                    <TabContent
-                        key={index}
-                        variants={{
-                            current: {
-                                opacity: 1,
-                                scale:1,
-                                display: "flex",
-                            },
-                            hidden: {
-                                opacity: 0,
-                                scale:0.8,
-                                display: "none",
-                            }
-                        }}
-                        transition={{ duration: 0.4 }}
-                        initial={activeTab === tabKey ? "current" : "hidden"}
-                        animate={activeTab === tabKey ? "current" : "hidden"}
-                    >
-                        {console.log(tabs[activeTab][0].name)}
-                        <CategCards id={activeTab} name={tabs[activeTab][0].name} desc = {tabs[activeTab][0].desc}/>
-                    </TabContent>
-                ))}
+                {tabsKeys.length > 0 && (
+                    tabsKeys.map((tabKey) => {
+                        const tabData = tabs[tabKey] && tabs[tabKey][0]; // Check if tabKey exists in tabs object and if it has at least one item
+                        console.log(tabData.id);
+                        return (
+                            <TabContent
+                                key={tabKey}
+                                variants={{
+                                    current: {
+                                        opacity: 1,
+                                        scale: 1,
+                                        display: "flex",
+                                    },
+                                    hidden: {
+                                        opacity: 0,
+                                        scale: 0.8,
+                                        display: "none",
+                                    }
+                                }}
+                                transition={{ duration: 0.4 }}
+                                initial={activeTab === tabKey ? "current" : "hidden"}
+                                animate={activeTab === tabKey ? "current" : "hidden"}
+                            >
+                                {tabData && (
+                                    <CategCards id={activeTab} name={tabData.full} desc={tabData.desc} />
+                                )}
+                            </TabContent>
+                        );
+                    })
+                )}
             </ContentWithPaddingXl>
             <DecoratorBlob1 />
             <DecoratorBlob2 />
         </Container>
     );
-};
-
+}

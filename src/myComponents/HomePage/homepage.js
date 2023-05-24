@@ -8,20 +8,13 @@ import tw from "twin.macro";
 import Nav from "../Nav";
 
 export default function homepage({ roundedHeaderButton }) {
-    const HighlightedText = tw.span`bg-primary-500 text-gray-100 px-4 transform -skew-x-12 inline-block`;
 
     return (
     <AnimationRevealPage>
         <Nav roundedHeaderButton={roundedHeaderButton} />
         <NavBar/>
         <Popular/>
-        <Categories
-            heading={
-                <>
-                    Checkout our <HighlightedText>Event Categories</HighlightedText>
-                </>
-            }
-        />
+        <Categories/>
         <Footer/>
     </AnimationRevealPage>
     );

@@ -19,7 +19,6 @@ const events = {
             date: "25 April 2023",
             company: "ThinkBiz Academy",
             imageSrc:planbiz,
-            videoSrc: "https://www.youtube.com/watch?v=KtRHV9gH83U"
         },
         {
             id:2,
@@ -28,7 +27,6 @@ const events = {
             date: "25 March 2023",
             company: "ThinkBiz Academy",
             imageSrc: thinkbiz,
-            videoSrc: "https://www.youtube.com/watch?v=KtRHV9gH83U"
 
         },
 
@@ -41,7 +39,6 @@ const events = {
             date: "2 Febuary 2023",
             company: "Tech Conference Inc",
             imageSrc: techconnect,
-            videoSrc: "https://www.youtube.com/watch?v=KtRHV9gH83U"
 
         },
         {
@@ -51,7 +48,6 @@ const events = {
             date: "2 Febuary 2023",
             company: "OpenAI",
             imageSrc: openai,
-            videoSrc: "https://www.youtube.com/watch?v=KtRHV9gH83U"
         },
     ],
         TEDxEvents: [
@@ -62,7 +58,6 @@ const events = {
             date: "25 April 2023",
             company: "TedxAUEB",
             imageSrc: pangea,
-            videoSrc: "https://www.youtube.com/watch?v=KtRHV9gH83U"
         },
         {
             id:6,
@@ -71,7 +66,6 @@ const events = {
             date: "2 May 2023",
             company: "TedxNTUA",
             imageSrc: play,
-            videoSrc: "https://www.youtube.com/watch?v=KtRHV9gH83U"
         },
 
     ],
@@ -83,7 +77,6 @@ const events = {
             date: "25 April 2023",
             company: "DET",
             imageSrc: fsdet,
-            videoSrc: "https://www.youtube.com/watch?v=KtRHV9gH83U"
 
         },
         {
@@ -93,7 +86,6 @@ const events = {
             date: "Every Saturday",
             company: "NTUA",
             imageSrc: party,
-            videoSrc: "https://www.youtube.com/watch?v=KtRHV9gH83U"
         },
     ],
 }

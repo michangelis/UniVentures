@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import tw from "twin.macro";
 import styled from "styled-components";
 import { css } from "styled-components/macro"; //eslint-disable-line
@@ -8,7 +8,10 @@ import { PrimaryButton as PrimaryButtonBase } from "components/misc/Buttons.js";
 import { ReactComponent as LocationIcon } from "feather-icons/dist/icons/map-pin.svg";
 import { ReactComponent as TimeIcon } from "feather-icons/dist/icons/clock.svg";
 import { ReactComponent as ArrowRightIcon } from "images/arrow-right-icon.svg";
-import {getEvents} from "./fakeEvents";
+import events, {getEvents} from "./fakeEvents";
+import {Link} from "react-router-dom";
+import axios from "axios";
+import {API_URL} from "../../api";
 
 
 const Container = tw.div`relative`;
@@ -58,9 +61,23 @@ const CardMetaFeature = styled.div`
 `;
 const CardAction = tw(PrimaryButtonBase)`w-full mt-6`;
 
-export default function CategCards(props){
+export default function CategCards(props) {
+    const categArray = getEvents(props.id) || [];
 
-    const categArray = getEvents(props.id);
+    const [categArr, setCategArr] = useState([]);
+
+    useEffect(() => {
+        axios
+            .get(API_URL + 'get_events_by_category/')
+            .then(response => {
+                setCategArr(response.data)
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }, []);
+
+
 
     return (
         <Container>
@@ -68,13 +85,15 @@ export default function CategCards(props){
                 <ThreeColumn>
                     <HeadingColumn textOnLeft={false}>
                         <HeadingInfoContainer>
-                            <HeadingTitle><span tw="text-primary-500">{props.name}</span></HeadingTitle>
-                            <HeadingDescription>
-                                {props.desc}
-                            </HeadingDescription>
+                            <HeadingTitle>
+                                <span tw="text-primary-500">{props.name}</span>
+                            </HeadingTitle>
+                            <HeadingDescription>{props.desc}</HeadingDescription>
                             <PrimaryLink>
-                                View all Events
-                                <ArrowRightIcon/>
+                                <Link to={{ pathname: `/events/${props.id}` }} style={{ textDecoration: "none" }}>
+                                    View all Events
+                                </Link>
+                                <ArrowRightIcon />
                             </PrimaryLink>
                         </HeadingInfoContainer>
                     </HeadingColumn>
@@ -96,7 +115,9 @@ export default function CategCards(props){
                                             <LocationIcon /> {categEvent.location}
                                         </CardMetaFeature>
                                     </CardMeta>
-                                    <CardAction>View Event</CardAction>
+                                    <Link to={{ pathname: `/event/${categEvent.id}` }} style={{ textDecoration: "none" }}>
+                                        <CardAction>View Event</CardAction>
+                                    </Link>
                                 </CardText>
                             </Card>
                         </CardColumn>
@@ -105,4 +126,5 @@ export default function CategCards(props){
             </Content>
         </Container>
     );
-};
+
+}

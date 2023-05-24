@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import Slider from "react-slick";
 import tw from "twin.macro";
 import styled from "styled-components";
@@ -9,7 +9,9 @@ import { ReactComponent as LocationIcon } from "feather-icons/dist/icons/map-pin
 import { ReactComponent as StarIcon } from "feather-icons/dist/icons/star.svg";
 import { ReactComponent as ChevronLeftIcon } from "feather-icons/dist/icons/chevron-left.svg";
 import { ReactComponent as ChevronRightIcon } from "feather-icons/dist/icons/chevron-right.svg";
-import {getEvents} from "./fakePopular";
+import {Link} from "react-router-dom";
+import axios from "axios";
+import {API_URL} from "../../api";
 
 const Container = tw.div`relative`;
 const Content = tw.div`max-w-screen-xl mx-auto py-16 lg:py-20`;
@@ -66,7 +68,15 @@ const IconContainer = styled.div`
 const Text = tw.div`ml-2 text-sm font-semibold text-gray-800`;
 
 const PrimaryButton = tw(PrimaryButtonBase)`mt-auto sm:text-lg rounded-none w-full rounded sm:rounded-none sm:rounded-br-4xl py-3 sm:py-6`;
-export default () => {
+
+const Actions = styled.div`
+      ${tw`relative max-w-md text-center mx-auto lg:mx-0`}
+      button {
+        ${tw`w-full sm:absolute right-0 top-0 bottom-0 bg-primary-500 text-gray-100 font-bold mr-2 my-4 sm:my-2 rounded-full py-4 flex items-center justify-center sm:w-40 sm:leading-none focus:outline-none hover:bg-primary-900 transition duration-300`}
+      }
+    `;
+
+export default function Popular() {
     // useState is used instead of useRef below because we want to re-render when sliderRef becomes available (not null)
     const [sliderRef, setSliderRef] = useState(null);
     const sliderSettings = {
@@ -89,14 +99,18 @@ export default () => {
         ]
     };
 
-    const Actions = styled.div`
-      ${tw`relative max-w-md text-center mx-auto lg:mx-0`}
-      button {
-        ${tw`w-full sm:absolute right-0 top-0 bottom-0 bg-primary-500 text-gray-100 font-bold mr-2 my-4 sm:my-2 rounded-full py-4 flex items-center justify-center sm:w-40 sm:leading-none focus:outline-none hover:bg-primary-900 transition duration-300`}
-      }
-    `;
+    const [events, setEvents] = useState([]);
 
-    const events = getEvents();
+    useEffect(() => {
+        axios.get(API_URL + 'get_popular/')
+            .then(response => {
+                setEvents(response.data)
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }, []);
+
 
 
     return (
@@ -110,9 +124,9 @@ export default () => {
                     </Controls>
                 </HeadingWithControl>
                 <CardSlider ref={setSliderRef} {...sliderSettings}>
-                    {events.map((card, index) => (
-                        <Card key={index}>
-                            <CardImage imageSrc={card.imageSrc} />
+                    {events.map((card) => (
+                        <Card key={card.id}>
+                            <CardImage imageSrc={`${card.imgSrc}`}/>
                             <TextInfo>
                                 <TitleReviewContainer>
                                     <Title>{card.title}</Title>
@@ -126,18 +140,20 @@ export default () => {
                                         <IconContainer>
                                             <LocationIcon />
                                         </IconContainer>
-                                        <Text>{card.locationText}</Text>
+                                        <Text>{card.location}</Text>
                                     </IconWithText>
                                     <IconWithText>
                                         <IconContainer>
                                             <PriceIcon />
                                         </IconContainer>
-                                        <Text>{card.pricingText}</Text>
+                                        <Text>{card.price}</Text>
                                     </IconWithText>
                                 </SecondaryInfoContainer>
                                 <Description>{card.description}</Description>
                             </TextInfo>
-                            <PrimaryButton>More info</PrimaryButton>
+                            <Link to={{pathname: `/event/${card.id}`}} style={{textDecoration: "none"}}>
+                                <PrimaryButton>More info</PrimaryButton>
+                            </Link>
                         </Card>
                     ))}
                 </CardSlider>

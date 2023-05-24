@@ -15,6 +15,7 @@ import {ReactComponent as SvgDecoratorBlob1} from "../../images/svg-decorator-bl
 import {ReactComponent as SvgDecoratorBlob2} from "../../images/svg-decorator-blob-7.svg";
 import {filterEvents, getEvents} from "./fakeEvents";
 import {Link} from "react-router-dom";
+import {useParams} from "react-router";
 
 const HeadingRow = tw.div`flex`;
 const Heading = tw(SectionHeading)`text-gray-900`;
@@ -112,12 +113,6 @@ export default function Events(){
 
     const HighlightedText = tw.span`bg-primary-500 text-gray-100 px-4 transform -skew-x-12 inline-block`;
 
-    const [selectedCategory, setSelectedCategory] = useState("");
-    const [selectedLocation, setSelectedLocation] = useState("");
-    const [selectedTime, setSelectedTime] = useState("");
-    const [selectedVol, setSelectedVol] = useState(false);
-
-
     const categOptions = [
         { value: "StartUps", label: "StartUps" },
         { value: "Tech", label: "Tech" },
@@ -147,9 +142,20 @@ export default function Events(){
 
     ];
 
+    const { categ_id } = useParams();
+    let initialOption = "";
+    console.log(categ_id);
 
+    if (categ_id !== undefined) {
+        initialOption = [categOptions.find(option => option.value === categ_id)];
+    }
 
+    console.log(initialOption); // Check if the initialOption is defined or not
 
+    const [selectedCategory, setSelectedCategory] = useState(initialOption);
+    const [selectedLocation, setSelectedLocation] = useState("");
+    const [selectedTime, setSelectedTime] = useState("");
+    const [selectedVol, setSelectedVol] = useState(false);
     const events = filterEvents(selectedCategory, selectedLocation, selectedTime, selectedVol);
 
     return (

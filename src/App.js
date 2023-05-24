@@ -125,7 +125,8 @@ export default function App() {
           <Route path="/thank-you" element={<ThankYouPage />} />
           <Route path="/" element={<MainLandingPage />} />
           <Route path="/home" element={<HomePage />} />
-          <Route path="/events" element={<EventsPage />} />
+          <Route exact path="/events" element={<EventsPage />} />
+          <Route path="/events/:categ_id" element={<EventsPage />} />
           <Route path="/event/:id" element={<Eventpage />} />
           <Route path="/volunteer/:id" element={<Volunteer />} />
         </Routes>
