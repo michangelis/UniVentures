@@ -9,7 +9,7 @@ import { SectionHeading } from "components/misc/Headings";
 import {PrimaryButton as PrimaryButtonBase, PrimaryButton} from "components/misc/Buttons";
 import SelectCateg from "./SelectCateg";
 import {motion, AnimatePresence} from "framer-motion";
-import Nav from "../Nav";
+import Nav from "./Nav";
 import {ReactComponent as StarIcon} from "../../images/star-icon.svg";
 import {ReactComponent as SvgDecoratorBlob1} from "../../images/svg-decorator-blob-5.svg";
 import {ReactComponent as SvgDecoratorBlob2} from "../../images/svg-decorator-blob-7.svg";

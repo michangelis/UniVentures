@@ -8,7 +8,6 @@ import CarouselFadeExample from "./CarouselFadeExample";
 export default () => (
     <AnimationRevealPage>
         <Nav/>
-        <CarouselFadeExample/>
         <Features />
         <Footer/>
     </AnimationRevealPage>
