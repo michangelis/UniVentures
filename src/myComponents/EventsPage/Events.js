@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import AnimationRevealPage from "helpers/AnimationRevealPage.js";
 import { Container, ContentWithPaddingXl } from "components/misc/Layouts";
 import tw from "twin.macro";
@@ -16,6 +16,8 @@ import {ReactComponent as SvgDecoratorBlob2} from "../../images/svg-decorator-bl
 import {filterEvents, getEvents} from "./fakeEvents";
 import {Link} from "react-router-dom";
 import {useParams} from "react-router";
+import {API_URL} from "../../api";
+import axios from "axios";
 
 const HeadingRow = tw.div`flex`;
 const Heading = tw(SectionHeading)`text-gray-900`;
@@ -111,36 +113,68 @@ const DecoratorBlob2 = styled(SvgDecoratorBlob2)`
 
 export default function Events(){
 
-    const HighlightedText = tw.span`bg-primary-500 text-gray-100 px-4 transform -skew-x-12 inline-block`;
+    useEffect(() => {
+        // Fetch options data
+        axios.get(API_URL + "get_all_categories/")
+            .then(response => {
+                setCategOptions(response.data);
+            })
+            .catch(error => {
+                // Handle error
+                console.error("Error fetching options:", error);
+            });
 
-    const categOptions = [
+        axios.get(API_URL + "get_locations/")
+            .then(response => {
+                setlocationOptions(response.data);
+            })
+            .catch(error => {
+                // Handle error
+                console.error("Error fetching options:", error);
+            });
+
+        axios.get(API_URL + "get_events/")
+            .then(response => {
+                setEvents(response.data);
+            })
+            .catch(error => {
+                // Handle error
+                console.error("Error fetching options:", error);
+            });
+
+
+    }, []);
+
+    const HighlightedText = tw.span`bg-primary-500 text-gray-100 px-4 transform -skew-x-12 inline-block`;
+    const [categOptions, setCategOptions] = useState([]);
+    const [locationOptions, setlocationOptions] = useState([]);
+    const [events, setEvents] = useState([]);
+
+
+    /*const categOptions = [
         { value: "StartUps", label: "StartUps" },
         { value: "Tech", label: "Tech" },
         { value: "TEDxEvents", label: "TEDxEvents" },
         { value: "Uni", label: "Uni" },
-    ];
+    ];*/
 
     const timeOptions = [
         { value: "today", label: "today" },
         { value: "This weekend", label: "This weekend" },
         { value: "This week", label: "This week" },
         { value: "This month", label: "This month" },
+        { value: "All", label: "All" },
     ];
 
-    const locationOptions = [
+    /*const locationOptions = [
         { value: "Zografou, Athens", label: "Zografou" },
         { value: "Kerameikos, Athens", label: "Kerameikos" },
         { value: "Viktoria, Athens", label: "Viktoria" },
         { value: "Aegaleo, Athens", label: "Aegaleo" },
         { value: "Kerameikos, Athens", label: "Kerameikos" },
         { value: "Megaro Mousikis, Athens", label: "Megaro Mousikis" },
-    ];
+    ];*/
 
-    const volunteerOptions = [
-        { value: true, label: "Yes" },
-        { value: false, label: "No" },
-
-    ];
 
     const { categ_id } = useParams();
     let initialOption = "";
@@ -155,8 +189,9 @@ export default function Events(){
     const [selectedCategory, setSelectedCategory] = useState(initialOption);
     const [selectedLocation, setSelectedLocation] = useState("");
     const [selectedTime, setSelectedTime] = useState("");
-    const [selectedVol, setSelectedVol] = useState(false);
-    const events = filterEvents(selectedCategory, selectedLocation, selectedTime, selectedVol);
+
+
+    const selectedEvents = filterEvents(events, selectedCategory, selectedLocation, selectedTime);
 
     return (
         <AnimationRevealPage>
@@ -196,16 +231,6 @@ export default function Events(){
                                     />
                                 </TabControl>
                             </div>
-                            <div tw="flex-grow">
-                                <TabControl>
-                                    <SelectCateg
-                                        title="Volunteer ?"
-                                        options={volunteerOptions}
-                                        setSelectedOption={setSelectedVol}
-                                        isMulti={false}
-                                    />
-                                </TabControl>
-                            </div>
                         </TabsControl>
                         </TabsContainer>
                     </div>
@@ -225,7 +250,7 @@ export default function Events(){
                             }}
                             transition={{ duration: 0.4 }}
                         >
-                        {events.map((card, index) => (
+                        {selectedEvents.map((card, index) => (
                             <CardContainer key={index}>
                                 <Card className="group" href="#" initial="rest" whileHover="hover" animate="rest">
                                     <CardImageContainer imageSrc={card.imageSrc}>

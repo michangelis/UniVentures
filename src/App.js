@@ -107,6 +107,7 @@ import HomePage from "./myComponents/HomePage/homepage";
 import Eventpage from "./myComponents/EventPage/Eventpage";
 import EventsPage from "./myComponents/EventsPage/Events";
 import Volunteer from "./myComponents/VolunteerPage/Volunteer";
+import VolunteerEvents from "./myComponents/VolunteerEvents/VolunteerEvents";
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
@@ -129,6 +130,7 @@ export default function App() {
           <Route path="/events/:categ_id" element={<EventsPage />} />
           <Route path="/event/:id" element={<Eventpage />} />
           <Route path="/volunteer/:id" element={<Volunteer />} />
+          <Route path="/volunteErevents" element={<VolunteerEvents />} />
         </Routes>
       </Router>
     </>

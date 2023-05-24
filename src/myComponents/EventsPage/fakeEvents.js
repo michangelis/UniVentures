@@ -16,9 +16,7 @@ const events = [
         date: "19 May 2023",
         company: "ThinkBiz Academy",
         imageSrc:planbiz,
-        videoSrc: "https://www.youtube.com/watch?v=KtRHV9gH83U",
-        category: "StartUps",
-        time: "today"
+        category: ["StartUps"],
 
     },
     {
@@ -28,9 +26,7 @@ const events = [
         date: "24 May 2023",
         company: "ThinkBiz Academy",
         imageSrc: thinkbiz,
-        videoSrc: "https://www.youtube.com/watch?v=KtRHV9gH83U",
-        category: "StartUps",
-        time: "This weekend",
+        category: ["StartUps"],
 
     },
     {
@@ -40,9 +36,7 @@ const events = [
         date: "20 May 2023",
         company: "Tech Conference Inc",
         imageSrc: techconnect,
-        videoSrc: "https://www.youtube.com/watch?v=KtRHV9gH83U",
-        category: "Tech",
-        time: "This week"
+        category: ["StartUps", "Tech"],
 
     },
     {
@@ -52,9 +46,7 @@ const events = [
         date: "30 May 2023",
         company: "OpenAI",
         imageSrc: openai,
-        videoSrc: "https://www.youtube.com/watch?v=KtRHV9gH83U",
-        category: "Tech",
-        time: "This month"
+        category: ["Tech"],
     },
     {
         id:5,
@@ -63,9 +55,7 @@ const events = [
         date: "25 May 2023",
         company: "TedxAUEB",
         imageSrc: pangea,
-        videoSrc: "https://www.youtube.com/watch?v=KtRHV9gH83U",
-        category: "TEDxEvents",
-        time: "This month"
+        category: ["TEDxEvents"],
     },
     {
         id:6,
@@ -74,9 +64,7 @@ const events = [
         date: "24 May 2023",
         company: "TedxNTUA",
         imageSrc: play,
-        videoSrc: "https://www.youtube.com/watch?v=KtRHV9gH83U",
-        category: "TEDxEvents",
-        time: "This week"
+        category: ["TEDxEvents"],
     },
     {
         id:7,
@@ -85,9 +73,7 @@ const events = [
         date: " 23 July 2023",
         company: "DET",
         imageSrc: fsdet,
-        videoSrc: "https://www.youtube.com/watch?v=KtRHV9gH83U",
-        category: "Uni",
-        time: "This weekend",
+        category: ["Uni"],
 
     },
     {
@@ -97,9 +83,7 @@ const events = [
         date: "4 May 2023",
         company: "NTUA",
         imageSrc: party,
-        videoSrc: "https://www.youtube.com/watch?v=KtRHV9gH83U",
-        category: "Uni",
-        time: "today"
+        category: ["Uni"],
     },
 ]
 
@@ -108,7 +92,7 @@ export function getEvents(){
 }
 
 
-export function filterEvents(categories, location, time, volunteer) {
+export function filterEvents(events, categories, location, time) {
     if ((!categories || categories.length === 0) && (!location || location.length === 0) && (!time || time.length === 0)) {
         // if both categories, location, and time parameters are empty, return all events
         return events;
@@ -122,9 +106,11 @@ export function filterEvents(categories, location, time, volunteer) {
             // check if the event's category field matches any value in the categories array
             if (categories && categories.length > 0) {
                 for (let i = 0; i < categories.length; i++) {
-                    if (event.category === categories[i].value) {
-                        categoryMatch = true;
-                        break;
+                    for (let j = 0; j < categories.length; j++) {
+                        if (event.category[j] === categories[i].value) {
+                            categoryMatch = true;
+                            break;
+                        }
                     }
                 }
             } else {
@@ -147,10 +133,12 @@ export function filterEvents(categories, location, time, volunteer) {
             if (time) {
                 const currentDate = new Date();
                 const eventDate = new Date(event.date);
-
                 const selectedTime = String(time.value).toLowerCase(); // convert time to lowercase
 
                 switch (selectedTime) {
+                    case 'all':
+                        timeMatch = true;
+                        break;
                     case 'today':
                         if (isSameDay(currentDate, eventDate)) {
                             timeMatch = true;
