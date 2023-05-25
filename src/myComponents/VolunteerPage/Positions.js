@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import styled from "styled-components";
 import tw from "twin.macro";
 //eslint-disable-next-line
@@ -15,6 +15,9 @@ import CustomizeIconImage from "../../images/customize-icon.svg";
 import FastIconImage from "../../images/fast-icon.svg";
 import ReliableIconImage from "../../images/reliable-icon.svg";
 import SimpleIconImage from "../../images/simple-icon.svg";
+import {useParams} from "react-router";
+import axios from "axios";
+import {API_URL} from "../../api";
 
 const Container = tw.div`relative`;
 
@@ -66,22 +69,18 @@ export default (props) => {
      *  3) description - the description of the card
      *  If a key for a particular card is not provided, a default value is used
      */
+    const { id } = useParams();
+    const [cards, setCards] = useState([]);
 
-
-    const cards = [
-        {
-            imageSrc: ShieldIconImage,
-            title: "Ads Management",
-            description: props.here ? "We create and manage ads that you need, from creation to deployment. Lorem ipsum donor sit amet consicou.": ""
-        },
-        { imageSrc: SupportIconImage, title: "Video Marketing", description: props.here ? "Video marketing involves creating and sharing videos to promote a brand, product, or service to a target audience.": ""},
-        { imageSrc: CustomizeIconImage, title: "Customer Relation", description: props.here ? "Customer relation is the process of building and maintaining positive relationships with customers to enhance loyalty and satisfaction.": "" },
-        { imageSrc: ReliableIconImage, title: "Product Outreach", description: props.here ? "Product outreach refers to the process of promoting a product to a new or existing target audience to increase awareness and sales.": "" },
-        { imageSrc: FastIconImage, title: "PR Campaign", description: props.here ? "A PR campaign is a planned effort to create and maintain a positive public image and reputation for a company or individual through media coverage.": "" },
-        { imageSrc: SimpleIconImage, title: "Product Expansion", description:props.here? "Product expansion is the process of developing and introducing new products or features to an existing product line to increase revenue and market share.": "" }
-    ];
-
-
+    useEffect(() => {
+        axios.get(API_URL + `get_pos_longlist/${id}/`)
+            .then(response => {
+                setCards(response.data)
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }, []);
 
 
     return (

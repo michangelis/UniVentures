@@ -22,7 +22,7 @@ export default () => {
                 heading={<>Words from the people who helped <HighlightedText>Organize</HighlightedText> the event</>}
             />            <Positions here={true}/>
             <Features
-                heading={<>Follow <HighlightedText>Them</HighlightedText>Around</>}
+                heading={<>Follow <HighlightedText>Us</HighlightedText> Around</>}
             />
             <Footer />
         </AnimationRevealPage>

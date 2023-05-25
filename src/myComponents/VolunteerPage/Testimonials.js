@@ -1,5 +1,5 @@
 import "slick-carousel/slick/slick.css";
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import Slider from "react-slick";
 import tw from "twin.macro";
 import styled from "styled-components";
@@ -12,6 +12,9 @@ import { ReactComponent as ArrowLeftIcon } from "images/arrow-left-3-icon.svg";
 import { ReactComponent as ArrowRightIcon } from "images/arrow-right-3-icon.svg";
 import {PrimaryButton as PrimaryButtonBase} from "../../components/misc/Buttons";
 import SelectCateg from "../EventsPage/SelectCateg";
+import {useParams} from "react-router";
+import axios from "axios";
+import {API_URL} from "../../api";
 
 const Row = tw.div`flex flex-col md:flex-row justify-between items-center`;
 const Column = tw.div`w-full max-w-md mx-auto md:max-w-none md:mx-0`;
@@ -92,24 +95,6 @@ export default ({
                     subheading = "Testimonials",
                     heading = "Words from the people who helped organize the event",
                     textOnLeft = false,
-                    testimonials = [
-                        {
-                            profileImageSrc:
-                                "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3.25&w=512&h=512&q=80",
-                            heading: "Amazing Volunteering Experience",
-                            quote:"TEDxAUEB offers an exceptional experience with diverse speakers sharing inspiring ideas worth spreading. Attendees can connect with like-minded individuals, participate in interactive workshops, and explore new ideas. With high production value and attention to detail, TEDxAUEB ensures a seamless and memorable experience.",
-                            customerName: "Charlotte Hale",
-                            customerTitle: "TEDxAUEB event Orginizer"
-                        },
-                        {
-                            profileImageSrc:
-                                "https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.25&w=512&h=512&q=80",
-                            heading: "Talk with amazing companies that helped organize the event",
-                            quote: "Speaking with the amazing companies that helped organize the TEDxAUEB event can offer insights into their roles and contributions. It allows for understanding of how their expertise, resources, and innovation helped bring the event to life, and how they aligned with the event's values and vision.",
-                            customerName: "Adam Cuppy",
-                            customerTitle: "Website, Coordinator"
-                        }
-                    ],
                     subh = "Contact Us",
                     head = <>Feel free to <span tw="text-primary-500">get in touch</span><wbr/> with us.</>,
                     description = "Register for position you want to be a part of and tell us why you want to be a part of this experience",
@@ -117,18 +102,44 @@ export default ({
                     formAction = "#",
                     formMethod = "get",
                 }) => {
+
+
     const [sliderRef, setSliderRef] = useState(null);
-    const locationOptions = [
-        { value: "Zografou, Athens", label: "Zografou" },
-        { value: "Kerameikos, Athens", label: "Kerameikos" },
-        { value: "Viktoria, Athens", label: "Viktoria" },
-        { value: "Aegaleo, Athens", label: "Aegaleo" },
-        { value: "Kerameikos, Athens", label: "Kerameikos" },
-        { value: "Megaro Mousikis, Athens", label: "Megaro Mousikis" },
+    const [volOptions, setVolOptions] = useState([]);
+    const { id } = useParams();
+    console.log(id);
+
+    useEffect(() => {
+        axios.get(API_URL + `get_pos_shortlist/${id}/`)
+            .then(response => {
+                setVolOptions(response.data)
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }, []);
+
+    const [selectedVolOptions, setSelectedVolOptions] = useState("");
+
+
+    const testimonials = [
+        {
+            profileImageSrc:
+                "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3.25&w=512&h=512&q=80",
+            heading: "Amazing Volunteering Experience",
+            quote:"TEDxAUEB offers an exceptional experience with diverse speakers sharing inspiring ideas worth spreading. Attendees can connect with like-minded individuals, participate in interactive workshops, and explore new ideas. With high production value and attention to detail, TEDxAUEB ensures a seamless and memorable experience.",
+            customerName: "Charlotte Hale",
+            customerTitle: "TEDxAUEB event Orginizer"
+        },
+        {
+            profileImageSrc:
+                "https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.25&w=512&h=512&q=80",
+            heading: "Talk with amazing companies that helped organize the event",
+            quote: "Speaking with the amazing companies that helped organize the TEDxAUEB event can offer insights into their roles and contributions. It allows for understanding of how their expertise, resources, and innovation helped bring the event to life, and how they aligned with the event's values and vision.",
+            customerName: "Adam Cuppy",
+            customerTitle: "Website, Coordinator"
+        }
     ];
-
-    const [selectedLocation, setSelectedLocation] = useState("");
-
 
     return (
         <Container>
@@ -142,9 +153,9 @@ export default ({
                             <Form action={formAction} method={formMethod}>
                                 <TabControl>
                                     <SelectCateg
-                                        title="Location"
-                                        options={locationOptions}
-                                        setSelectedOption={setSelectedLocation}
+                                        title="Position"
+                                        options={volOptions}
+                                        setSelectedOption={setSelectedVolOptions}
                                         isMulti={false}
                                     />
                                 </TabControl>                                <Txtarea name="message" placeholder="Your Message Here" />

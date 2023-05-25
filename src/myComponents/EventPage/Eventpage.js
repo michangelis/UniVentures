@@ -17,7 +17,7 @@ export default function Eventpage(){
             <Hero />
             <FeatureStats/>
             <Features
-                heading={<>Follow <HighlightedText>Us</HighlightedText>Around</>}
+                heading={<>Follow <HighlightedText>Us</HighlightedText> Around</>}
             />
             <FAQ
                 heading={<>Any <HighlightedText>Questions ?</HighlightedText></>}

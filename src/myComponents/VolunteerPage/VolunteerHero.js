@@ -1,9 +1,6 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import styled from "styled-components";
 import tw from "twin.macro";
-//eslint-disable-next-line
-import { css } from "styled-components/macro";
-
 import ReactModalAdapter from "../../helpers/ReactModalAdapter.js";
 import ResponsiveVideoEmbed from "../../helpers/ResponsiveVideoEmbed.js";
 import { ReactComponent as PlayIcon } from "feather-icons/dist/icons/play-circle.svg";
@@ -11,9 +8,12 @@ import { ReactComponent as CloseIcon } from "feather-icons/dist/icons/x.svg";
 import { ReactComponent as SvgDecoratorBlob1 } from "../../images/svg-decorator-blob-1.svg";
 import { ReactComponent as SvgDecoratorBlob2 } from "../../images/dot-pattern.svg";
 import Nav from "../Nav";
-import {getEvent} from "./fakeEvent";
 import { ReactComponent as LocationIcon } from "feather-icons/dist/icons/map-pin.svg";
 import { ReactComponent as TimeIcon } from "feather-icons/dist/icons/clock.svg";
+import {useParams} from "react-router";
+import axios from "axios";
+import {API_URL} from "../../api";
+
 
 const Container = tw.div`relative`;
 const TwoColumn = tw.div`flex flex-col lg:flex-row md:items-center max-w-screen-xl mx-auto py-20 md:py-24`;
@@ -58,50 +58,88 @@ const StyledModal = styled(ReactModalAdapter)`
   }
 `;
 const CloseModalButton = tw.button`absolute top-0 right-0 mt-8 mr-8 hocus:text-primary-500`;
+const IconWithText = tw.div`flex items-center mr-6 my-2 sm:my-0`;
 
-const pageData = [
-    {
-        primaryButtonText:"Volunteer",
-        primaryButtonUrl:"#",
-        watchVideoButtonText:"Watch Video",
-        imageCss:null,
-        imageDecoratorBlob: false,
-    }
-];
+const IconGrid = tw.div`flex flex-wrap justify-start items-center mb-8`; // New styled component for grid structure and bottom spacing
+
+const IconBox = tw.div`flex items-center mb-4 w-full sm:w-1/2`; // Change 'lg:w-1/4' to 'sm:w-1/2'
+
+const IconContainer = styled.div`
+  ${tw`inline-block rounded-full p-2 bg-primary-700 text-white mr-2`}
+  svg {
+    ${tw`w-6 h-6`}
+  }
+`;
+
+const IconText = tw.div`ml-2 text-base lg:text-lg font-bold text-gray-600`;
+
+const Form = tw.form`mt-8 md:mt-10 text-sm flex flex-col max-w-sm mx-auto md:mx-0`
+const TabControl = styled.div`
+  ${tw`cursor-pointer px-6 py-3 mt-2 sm:mt-0 sm:mr-2 last:mr-0 text-gray-600 font-medium rounded-sm transition duration-300 text-sm sm:text-base text-center`}
+  ${tw`h-12`}`;
+
 const HighlightedText = tw.span`text-primary-500`
 
-export default ({ roundedHeaderButton }) => {
-    const [modalIsOpen, setModalIsOpen] = useState(false);
-    const event = getEvent();
-    const toggleModal = () => setModalIsOpen(!modalIsOpen);
-    const TimeLocationContainer = tw.div`flex flex-wrap items-center my-2`;
 
-    const TimeContainer = tw.div`flex items-center mr-8`;
-    const LocationContainer = tw.div`flex items-center`;
+export default ({ roundedHeaderButton }) => {
+
+    const { id } = useParams();
+
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [event, setEvent] = useState(false);
+
+    const toggleModal = () => setModalIsOpen(!modalIsOpen);
+
+    useEffect(() => {
+        axios.get(API_URL + `get_event/${id}/`)
+            .then(response => {
+                setEvent(response.data)
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }, []);
+
+
+    const pageData = [
+        {
+            primaryButtonText:"Volunteer",
+            primaryButtonUrl:`/volunteer/${id}`,
+            watchVideoButtonText:"Watch Video",
+            imageCss:null,
+            imageDecoratorBlob: false,
+        }
+    ];
+
     return (
         <>
             <Nav roundedHeaderButton={roundedHeaderButton} />
             <Container>
                 <TwoColumn>
                     <LeftColumn>
-                        <Heading>{event[0].title} <HighlightedText>Volunteer Page</HighlightedText></Heading>
-                        <Paragraph>{event[0].description}</Paragraph>
-                        <TimeLocationContainer>
-                            <TimeContainer>
-                                <TimeIcon />
-                                <Paragraph>{event[0].date}</Paragraph>
-                            </TimeContainer>
-                            <LocationContainer>
-                                <LocationIcon />
-                                <Paragraph>{event[0].location}</Paragraph>
-                            </LocationContainer>
-                        </TimeLocationContainer>
+                        <Heading>{event.title} <HighlightedText>Volunteer Page</HighlightedText></Heading>
+                        <Paragraph>We, the organizers of <HighlightedText>{event.title}</HighlightedText>,
+                            are thrilled that you are considering volunteering for our event.
+                            Your contribution would be vital in bringing our vision to life and making a
+                            positive impact on global challenges through innovation and collaboration.
+                            <HighlightedText>Thank you</HighlightedText> for considering joining our team!
+                        </Paragraph>
+                        <IconGrid>
+                            <IconBox>
+                                <IconContainer><TimeIcon /></IconContainer>
+                                <IconText>{event.date}</IconText>
+                            </IconBox>
+                            <IconBox>
+                                <IconContainer><LocationIcon /></IconContainer>
+                                <IconText>{event.location}</IconText>
+                            </IconBox>
+                        </IconGrid>
                     </LeftColumn>
                     <RightColumn>
                         <IllustrationContainer>
                             <img
                                 css={pageData[0].imageCss}
-                                src={event[0].imageSrc}
+                                src={event.imageSrc}
                                 alt="Hero"
                             />
                             {pageData[0].imageDecoratorBlob && <DecoratorBlob2 />}
@@ -120,7 +158,7 @@ export default ({ roundedHeaderButton }) => {
                         <CloseIcon tw="w-6 h-6" />
                     </CloseModalButton>
                     <div className="content">
-                        <ResponsiveVideoEmbed url={event[0].videoSrc} tw="w-full" />
+                        <ResponsiveVideoEmbed url={event.videoSrc} tw="w-full" />
                     </div>
                 </StyledModal>
             </Container>
