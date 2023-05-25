@@ -10,6 +10,8 @@ import loveIllustrationImageSrc from "images/love-illustration.svg";
 import { ReactComponent as StarIconBase } from "images/star-icon.svg";
 import { ReactComponent as ArrowLeftIcon } from "images/arrow-left-3-icon.svg";
 import { ReactComponent as ArrowRightIcon } from "images/arrow-right-3-icon.svg";
+import {PrimaryButton as PrimaryButtonBase} from "../../components/misc/Buttons";
+import SelectCateg from "../EventsPage/SelectCateg";
 
 const Row = tw.div`flex flex-col md:flex-row justify-between items-center`;
 const Column = tw.div`w-full max-w-md mx-auto md:max-w-none md:mx-0`;
@@ -68,6 +70,20 @@ const ControlButton = styled.button`
   }
 `;
 
+const TextContent = tw.div`lg:py-8 text-center md:text-left`;
+const Form = tw.form`mt-8 md:mt-10 text-sm flex flex-col max-w-sm mx-auto md:mx-0`
+const Input = tw.input`mt-6 first:mt-0 border-b-2 py-3 focus:outline-none font-medium transition duration-300 hocus:border-primary-500`
+const Txtarea = styled(Input).attrs({as: "textarea"})`
+  ${tw`h-24`}
+`
+const TabsControl = tw.div`flex flex-col bg-primary-500 px-2 py-5 rounded leading-none mt-12 xl:mt-0 sm:flex-row sm:flex-wrap sm:h-auto sm:max-h-full`;
+
+const TabControl = styled.div`
+  ${tw`cursor-pointer px-6 py-3 mt-2 sm:mt-0 sm:mr-2 last:mr-0 text-gray-600 font-medium rounded-sm transition duration-300 text-sm sm:text-base text-center`}
+  ${tw`h-12`}`;
+
+const SubmitButton = tw(PrimaryButtonBase)`inline-block mt-8`
+
 export default ({
                     imageSrc = loveIllustrationImageSrc,
                     imageRounded = true,
@@ -80,7 +96,7 @@ export default ({
                         {
                             profileImageSrc:
                                 "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3.25&w=512&h=512&q=80",
-                            heading: "Amazing Attendee Experience",
+                            heading: "Amazing Volunteering Experience",
                             quote:"TEDxAUEB offers an exceptional experience with diverse speakers sharing inspiring ideas worth spreading. Attendees can connect with like-minded individuals, participate in interactive workshops, and explore new ideas. With high production value and attention to detail, TEDxAUEB ensures a seamless and memorable experience.",
                             customerName: "Charlotte Hale",
                             customerTitle: "TEDxAUEB event Orginizer"
@@ -93,18 +109,50 @@ export default ({
                             customerName: "Adam Cuppy",
                             customerTitle: "Website, Coordinator"
                         }
-                    ]
+                    ],
+                    subh = "Contact Us",
+                    head = <>Feel free to <span tw="text-primary-500">get in touch</span><wbr/> with us.</>,
+                    description = "Register for position you want to be a part of and tell us why you want to be a part of this experience",
+                    submitButtonText = "Volunteer",
+                    formAction = "#",
+                    formMethod = "get",
                 }) => {
     const [sliderRef, setSliderRef] = useState(null);
+    const locationOptions = [
+        { value: "Zografou, Athens", label: "Zografou" },
+        { value: "Kerameikos, Athens", label: "Kerameikos" },
+        { value: "Viktoria, Athens", label: "Viktoria" },
+        { value: "Aegaleo, Athens", label: "Aegaleo" },
+        { value: "Kerameikos, Athens", label: "Kerameikos" },
+        { value: "Megaro Mousikis, Athens", label: "Megaro Mousikis" },
+    ];
+
+    const [selectedLocation, setSelectedLocation] = useState("");
+
 
     return (
         <Container>
             <ContentWithPaddingXl>
                 <Row>
-                    <ImageColumn>
-                        <Image src={imageSrc} imageBorder={imageBorder} imageShadow={imageShadow} imageRounded={imageRounded} />
-                    </ImageColumn>
-                    <TextColumn textOnLeft={textOnLeft}>
+                    <TextColumn textOnLeft={true}>
+                        <TextContent>
+                            {subh && <Subheading>{subh}</Subheading>}
+                            <Heading>{head}</Heading>
+                            {description && <Description>{description}</Description>}
+                            <Form action={formAction} method={formMethod}>
+                                <TabControl>
+                                    <SelectCateg
+                                        title="Location"
+                                        options={locationOptions}
+                                        setSelectedOption={setSelectedLocation}
+                                        isMulti={false}
+                                    />
+                                </TabControl>                                <Txtarea name="message" placeholder="Your Message Here" />
+                                <SubmitButton type="submit">{submitButtonText}</SubmitButton>
+                            </Form>
+                        </TextContent>
+                    </TextColumn>
+                    <TextColumn textOnLeft={false}>
                         <Subheading>{subheading}</Subheading>
                         <Heading>{heading}</Heading>
                         <TestimonialSlider arrows={false} ref={setSliderRef}>

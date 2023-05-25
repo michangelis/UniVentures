@@ -37,7 +37,7 @@ const SubmitButton = tw(PrimaryButtonBase)`inline-block mt-8`
 export default ({
                     subheading = "Contact Us",
                     heading = <>Feel free to <span tw="text-primary-500">get in touch</span><wbr/> with us.</>,
-                    description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                    description = "Register for position you want to be a part of and tell us why you want to be a part of this experience",
                     submitButtonText = "Volunteer",
                     formAction = "#",
                     formMethod = "get",
@@ -47,7 +47,6 @@ export default ({
     return (
         <Container>
             <TwoColumn>
-                <Positions here={false}/>
                 <TextColumn textOnLeft={textOnLeft}>
                     <TextContent>
                         {subheading && <Subheading>{subheading}</Subheading>}

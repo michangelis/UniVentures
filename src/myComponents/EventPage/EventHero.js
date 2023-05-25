@@ -3,17 +3,22 @@ import styled from "styled-components";
 import tw from "twin.macro";
 //eslint-disable-next-line
 import { css } from "styled-components/macro";
-
+import { ReactComponent as PriceIcon } from "feather-icons/dist/icons/dollar-sign.svg";
 import ReactModalAdapter from "../../helpers/ReactModalAdapter.js";
 import ResponsiveVideoEmbed from "../../helpers/ResponsiveVideoEmbed.js";
 import { ReactComponent as PlayIcon } from "feather-icons/dist/icons/play-circle.svg";
 import { ReactComponent as CloseIcon } from "feather-icons/dist/icons/x.svg";
 import { ReactComponent as SvgDecoratorBlob1 } from "../../images/svg-decorator-blob-1.svg";
 import { ReactComponent as SvgDecoratorBlob2 } from "../../images/dot-pattern.svg";
+
 import Nav from "../Nav";
 import {getEvent} from "./fakeEvent";
 import { ReactComponent as LocationIcon } from "feather-icons/dist/icons/map-pin.svg";
 import { ReactComponent as TimeIcon } from "feather-icons/dist/icons/clock.svg";
+import { ReactComponent as StarIcon } from "feather-icons/dist/icons/star.svg";
+import SelectCateg from "../EventsPage/SelectCateg";
+import {useParams} from "react-router";
+
 
 const Container = tw.div`relative`;
 const TwoColumn = tw.div`flex flex-col lg:flex-row md:items-center max-w-screen-xl mx-auto py-20 md:py-24`;
@@ -58,25 +63,60 @@ const StyledModal = styled(ReactModalAdapter)`
   }
 `;
 const CloseModalButton = tw.button`absolute top-0 right-0 mt-8 mr-8 hocus:text-primary-500`;
+const IconWithText = tw.div`flex items-center mr-6 my-2 sm:my-0`;
 
-const pageData = [
-    {
-        primaryButtonText:"Volunteer",
-        primaryButtonUrl:"#",
-        watchVideoButtonText:"Watch Video",
-        imageCss:null,
-        imageDecoratorBlob: false,
-    }
-];
+const IconGrid = tw.div`flex flex-wrap justify-start items-center mb-8`; // New styled component for grid structure and bottom spacing
+
+const IconBox = tw.div`flex items-center mb-4 w-full sm:w-1/2`; // Change 'lg:w-1/4' to 'sm:w-1/2'
+
+const IconContainer = styled.div`
+  ${tw`inline-block rounded-full p-2 bg-primary-700 text-white mr-2`}
+  svg {
+    ${tw`w-6 h-6`}
+  }
+`;
+
+const IconText = tw.div`ml-2 text-base lg:text-lg font-bold text-gray-600`;
+
+const Form = tw.form`mt-8 md:mt-10 text-sm flex flex-col max-w-sm mx-auto md:mx-0`
+const TabControl = styled.div`
+  ${tw`cursor-pointer px-6 py-3 mt-2 sm:mt-0 sm:mr-2 last:mr-0 text-gray-600 font-medium rounded-sm transition duration-300 text-sm sm:text-base text-center`}
+  ${tw`h-12`}`;
+
+
+
+
 
 export default ({ roundedHeaderButton }) => {
+
+    const { id } = useParams();
+
     const [modalIsOpen, setModalIsOpen] = useState(false);
+
     const event = getEvent();
     const toggleModal = () => setModalIsOpen(!modalIsOpen);
-    const TimeLocationContainer = tw.div`flex flex-wrap items-center my-2`;
+    const locationOptions = [
+        { value: 5, label: "Yes" },
+        { value: 3, label: "Maybe" },
+        { value: 1, label: "No" },
+    ];
 
-    const TimeContainer = tw.div`flex items-center mr-8`;
-    const LocationContainer = tw.div`flex items-center`;
+    const [selectedLocation, setSelectedLocation] = useState("");
+
+    const pageData = [
+        {
+            primaryButtonText:"Volunteer",
+            primaryButtonUrl:`/volunteer/${id}`,
+            watchVideoButtonText:"Watch Video",
+            imageCss:null,
+            imageDecoratorBlob: false,
+        }
+    ];
+
+    console.log(selectedLocation.value);
+
+
+
     return (
         <>
             <Nav roundedHeaderButton={roundedHeaderButton} />
@@ -85,23 +125,38 @@ export default ({ roundedHeaderButton }) => {
                     <LeftColumn>
                         <Heading>{event[0].title}</Heading>
                         <Paragraph>{event[0].description}</Paragraph>
-                        <TimeLocationContainer>
-                            <TimeContainer>
-                                <TimeIcon />
-                                <Paragraph>{event[0].date}</Paragraph>
-                            </TimeContainer>
-                            <LocationContainer>
-                                <LocationIcon />
-                                <Paragraph>{event[0].location}</Paragraph>
-                            </LocationContainer>
-                        </TimeLocationContainer>
+                        <IconGrid>
+                            <IconBox>
+                                <IconContainer><TimeIcon /></IconContainer>
+                                <IconText>{event[0].date}</IconText>
+                            </IconBox>
+                            <IconBox>
+                                <IconContainer><LocationIcon /></IconContainer>
+                                <IconText>{event[0].location}</IconText>
+                            </IconBox>
+                            <IconBox>
+                                <IconContainer><PriceIcon /></IconContainer>
+                                <IconText>{"10"}</IconText>
+                            </IconBox>
+                            <IconBox>
+                                <IconContainer><StarIcon /></IconContainer>
+                                <IconText>
+                                    <SelectCateg
+                                        title="Intrested ?"
+                                        options={locationOptions}
+                                        setSelectedOption={setSelectedLocation}
+                                        isMulti={false}
+                                    />
+                                </IconText>
+                            </IconBox>
+                        </IconGrid>
                         <Actions>
                             <PrimaryButton as="a" href={pageData[0].primaryButtonUrl}>{pageData[0].primaryButtonText}</PrimaryButton>
                             <WatchVideoButton onClick={toggleModal}>
-                <span className="playIconContainer">
-                  <PlayIcon className="playIcon" />
-                </span>
-                                <span className="playText">{pageData[0].watchVideoButtonText}</span>
+                            <span className="playIconContainer">
+                              <PlayIcon className="playIcon" />
+                            </span>
+                            <span className="playText">{pageData[0].watchVideoButtonText}</span>
                             </WatchVideoButton>
                         </Actions>
                     </LeftColumn>

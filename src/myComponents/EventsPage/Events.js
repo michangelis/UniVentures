@@ -67,12 +67,12 @@ const Actions = styled.div`
 `;
 const TabsContainer = tw.div`sm:flex-row sm:flex-wrap h-full max-w-6xl`;
 
-const TabsControl = tw.div`flex flex-col bg-primary-500 px-2 py-5 rounded leading-none mt-12 xl:mt-0 sm:flex-row sm:flex-wrap sm:h-auto sm:max-h-full`;
+    const TabsControl = tw.div`flex flex-col bg-primary-500 px-2 py-5 rounded leading-none mt-12 xl:mt-0 sm:flex-row sm:flex-wrap sm:h-auto sm:max-h-full`;
 
-const TabControl = styled.div`
-  ${tw`cursor-pointer px-6 py-3 mt-2 sm:mt-0 sm:mr-2 last:mr-0 text-gray-600 font-medium rounded-sm transition duration-300 text-sm sm:text-base text-center`}
-  ${tw`h-12`}
-`;
+    const TabControl = styled.div`
+      ${tw`cursor-pointer px-6 py-3 mt-2 sm:mt-0 sm:mr-2 last:mr-0 text-gray-600 font-medium rounded-sm transition duration-300 text-sm sm:text-base text-center`}
+      ${tw`h-12`}
+    `;
 const TabContent = tw(motion.div)`mt-6 flex flex-wrap sm:-mr-10 md:-mr-6 lg:-mr-12`;
 
 const CardContainer = tw.div`mt-10 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 sm:pr-10 md:pr-6 lg:pr-12`;

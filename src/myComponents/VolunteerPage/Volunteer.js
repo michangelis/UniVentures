@@ -7,6 +7,7 @@ import Footer from "../Footer";
 import Positions from "./Positions";
 import ContactUs from "./ContactUs";
 import {useParams} from "react-router";
+import Testimonial from "./Testimonials";
 
 const HighlightedText = tw.span`text-primary-500`;
 
@@ -17,8 +18,9 @@ export default () => {
     return (
         <AnimationRevealPage>
             <Hero/>
-            <ContactUs/>
-            <Positions here={true}/>
+            <Testimonial
+                heading={<>Words from the people who helped <HighlightedText>Organize</HighlightedText> the event</>}
+            />            <Positions here={true}/>
             <Features
                 heading={<>Follow <HighlightedText>Them</HighlightedText>Around</>}
             />

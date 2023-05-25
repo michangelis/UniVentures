@@ -4,7 +4,6 @@ import AnimationRevealPage from "helpers/AnimationRevealPage.js";
 import Hero from "./EventHero";
 import Features from "./SocialLinks";
 import FeatureStats from "./FeatureStats";
-import Testimonial from "./Testimonials";
 import FAQ from "./Faq";
 import Footer from "../Footer";
 import {useParams} from "react-router";
@@ -15,13 +14,10 @@ export default function Eventpage(){
     console.log(id);
     return (
         <AnimationRevealPage>
-            <Hero/>
+            <Hero />
             <FeatureStats/>
-            <Testimonial
-                heading={<>Words from the people who helped <HighlightedText>Organize</HighlightedText> the event</>}
-            />
             <Features
-                heading={<>Follow <HighlightedText>Them</HighlightedText>Around</>}
+                heading={<>Follow <HighlightedText>Us</HighlightedText>Around</>}
             />
             <FAQ
                 heading={<>Any <HighlightedText>Questions ?</HighlightedText></>}

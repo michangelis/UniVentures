@@ -32,8 +32,8 @@ const Column = styled.div`
   ${tw`md:w-1/2 lg:w-1/3 max-w-sm`}
 `;
 
-const Card = styled.div`
-  ${tw`flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left h-full mx-4 px-2 py-8`}
+const Card = styled.a`
+  ${tw`flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left h-full mx-4 px-2 py-8 rounded transition-transform duration-300 hover:cursor-pointer transform hover:scale-105 `}
   .imageContainer {
     ${tw`border text-center rounded-full p-5 flex-shrink-0`}
     img {
@@ -68,9 +68,9 @@ export default ({ cards = null, heading = "Amazing Features", subheading = "Feat
      */
 
     const defaultCards = [
-        {imageSrc: Instagram, title: "Instagram",},
-        { imageSrc: Ticktock, title: "Tiktok" },
-        { imageSrc: Website, title: "Website" },
+        {imageSrc: Instagram, title: "Instagram", url: "https://instagram.com"},
+        { imageSrc: Ticktock, title: "Tiktok", url: "https://tiktok.com" },
+        { imageSrc: Website, title: "Website", url: "https://fsdet.dmst.aueb.gr/" },
     ];
 
     if (!cards) cards = defaultCards;
@@ -83,13 +83,13 @@ export default ({ cards = null, heading = "Amazing Features", subheading = "Feat
                 <VerticalSpacer />
                 {cards.map((card, i) => (
                     <Column key={i}>
-                        <Card>
-              <span className="imageContainer">
-                <img src={card.imageSrc || defaultCardImage} alt="" />
-              </span>
+                        <Card href={card.url}>
+                        <span className="imageContainer">
+                            <img src={card.imageSrc || defaultCardImage} alt="" />
+                        </span>
                             <span className="textContainer">
-                <span className="title">{card.title || "Fully Secure"}</span>
-              </span>
+                            <span className="title">{card.title || "Fully Secure"}</span>
+                        </span>
                         </Card>
                     </Column>
                 ))}
