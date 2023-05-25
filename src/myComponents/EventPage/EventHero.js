@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import styled from "styled-components";
 import tw from "twin.macro";
 //eslint-disable-next-line
@@ -18,6 +18,8 @@ import { ReactComponent as TimeIcon } from "feather-icons/dist/icons/clock.svg";
 import { ReactComponent as StarIcon } from "feather-icons/dist/icons/star.svg";
 import SelectCateg from "../EventsPage/SelectCateg";
 import {useParams} from "react-router";
+import axios from "axios";
+import {API_URL} from "../../api";
 
 
 const Container = tw.div`relative`;
@@ -92,14 +94,24 @@ export default ({ roundedHeaderButton }) => {
     const { id } = useParams();
 
     const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [event, setEvent] = useState(false);
 
-    const event = getEvent();
     const toggleModal = () => setModalIsOpen(!modalIsOpen);
     const locationOptions = [
         { value: 5, label: "Yes" },
         { value: 3, label: "Maybe" },
         { value: 1, label: "No" },
     ];
+
+    useEffect(() => {
+        axios.get(API_URL + `get_event/${id}/`)
+            .then(response => {
+                setEvent(response.data)
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }, []);
 
     const [selectedLocation, setSelectedLocation] = useState("");
 
@@ -123,20 +135,20 @@ export default ({ roundedHeaderButton }) => {
             <Container>
                 <TwoColumn>
                     <LeftColumn>
-                        <Heading>{event[0].title}</Heading>
-                        <Paragraph>{event[0].description}</Paragraph>
+                        <Heading>{event.title}</Heading>
+                        <Paragraph>{event.description}</Paragraph>
                         <IconGrid>
                             <IconBox>
                                 <IconContainer><TimeIcon /></IconContainer>
-                                <IconText>{event[0].date}</IconText>
+                                <IconText>{event.date}</IconText>
                             </IconBox>
                             <IconBox>
                                 <IconContainer><LocationIcon /></IconContainer>
-                                <IconText>{event[0].location}</IconText>
+                                <IconText>{event.location}</IconText>
                             </IconBox>
                             <IconBox>
                                 <IconContainer><PriceIcon /></IconContainer>
-                                <IconText>{"10"}</IconText>
+                                <IconText>{event.price}</IconText>
                             </IconBox>
                             <IconBox>
                                 <IconContainer><StarIcon /></IconContainer>
@@ -164,7 +176,7 @@ export default ({ roundedHeaderButton }) => {
                         <IllustrationContainer>
                             <img
                                 css={pageData[0].imageCss}
-                                src={event[0].imageSrc}
+                                src={event.imageSrc}
                                 alt="Hero"
                             />
                             {pageData[0].imageDecoratorBlob && <DecoratorBlob2 />}
@@ -183,7 +195,7 @@ export default ({ roundedHeaderButton }) => {
                         <CloseIcon tw="w-6 h-6" />
                     </CloseModalButton>
                     <div className="content">
-                        <ResponsiveVideoEmbed url={event[0].videoSrc} tw="w-full" />
+                        <ResponsiveVideoEmbed url={event.videoSrc} tw="w-full" />
                     </div>
                 </StyledModal>
             </Container>

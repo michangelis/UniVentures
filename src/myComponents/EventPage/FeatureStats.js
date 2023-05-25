@@ -1,9 +1,12 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import tw from "twin.macro";
 import { css } from "styled-components/macro"; //eslint-disable-line
 import { SectionHeading, Subheading as SubheadingBase } from "components/misc/Headings.js";
 import { Container as ContainerBase, ContentWithPaddingXl } from "components/misc/Layouts";
 import { SectionDescription } from "components/misc/Typography";
+import axios from "axios";
+import {API_URL} from "../../api";
+import {useParams} from "react-router";
 
 const Container = tw(ContainerBase)`my-8 lg:my-10 bg-primary-900 text-gray-100 -mx-8 px-8`;
 const HeadingContainer = tw.div``;
@@ -16,22 +19,22 @@ const Stat = tw.div`flex flex-col text-center p-4 tracking-wide`
 const StatKey = tw.div`text-xl font-medium`
 const StatValue = tw.div`text-4xl sm:text-3xl md:text-4xl lg:text-5xl font-black`
 
-const stats= [
-    {
-        key: "Speakers",
-        value: "250+",
-    },
-    {
-        key: "Attendees",
-        value: "1000+",
-    },
-    {
-        key: "Workshops",
-        value: "50+",
-    },
-]
 
 export default () => {
+    const { id } = useParams();
+    const [stats, setStats] = useState([]);
+
+    useEffect(() => {
+        axios.get(API_URL + `get_event_features/${id}/`)
+            .then(response => {
+                setStats(response.data)
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }, []);
+
+
     return (
         <Container>
             <ContentWithPaddingXl>

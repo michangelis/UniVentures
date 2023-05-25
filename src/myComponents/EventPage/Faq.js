@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { motion } from "framer-motion";
 import styled from "styled-components";
 import tw from "twin.macro";
@@ -9,6 +9,9 @@ import { Container, ContentWithPaddingXl } from "components/misc/Layouts.js";
 import { ReactComponent as ChevronDownIcon } from "feather-icons/dist/icons/chevron-down.svg";
 import { ReactComponent as SvgDecoratorBlob1 } from "images/svg-decorator-blob-7.svg";
 import { ReactComponent as SvgDecoratorBlob2 } from "images/svg-decorator-blob-8.svg";
+import {useParams} from "react-router";
+import axios from "axios";
+import {API_URL} from "../../api";
 
 const Subheading = tw(SubheadingBase)`mb-4 text-center`;
 const Heading = tw(SectionHeading)`w-full`;
@@ -42,30 +45,45 @@ export default ({
                     subheading = "FAQS",
                     heading = "You have Questions ?",
                     description = "The FAQs answer common attendee questions, making the event more accessible and enjoyable by providing clear and concise information.",
-                    faqs = [
-                        {
-                            question: "What is the theme of the TEDxAUEB event (Pangea)?",
-                            answer:
-                                "The theme of the TEDxAUEB event is Pangea: Reconnecting Our World. The event aims to explore ideas and initiatives that promote unity and interconnectedness in today's globalized world."
-                        },
-                        {
-                            question: "What are some important things to consider when attending a TEDx event like TEDxAUEB Pangea ?",
-                            answer:
-                                "Be prepared to listen: TEDx talks are all about ideas worth spreading, so be prepared to listen and engage with the speakers and their ideas."
-                        },
-                        {
-                            question: "Who can attend the TEDxAUEB event Pangea?",
-                            answer:
-                                "Anyone who is interested in TEDx talks and the theme of the event can attend the TEDxAUEB event (Pangea). However, attendees are required to purchase a ticket in advance to secure their spot."
-                        },
-                        {
-                            question: "Who are the speakers at the TEDxAUEB event Pangea?",
-                            answer:
-                                "The speakers at the TEDxAUEB event Pangea are experts and innovators from various fields, including technology, science, business, and the arts. Their talks will revolve around the theme of the event, exploring ways to reconnect our world and build a better future for all."
-                        }
-                    ]
                 }) => {
     const [activeQuestionIndex, setActiveQuestionIndex] = useState(null);
+
+    /*const faqs = [
+        {
+            question: "What is the theme of the TEDxAUEB event (Pangea)?",
+            answer:
+                "The theme of the TEDxAUEB event is Pangea: Reconnecting Our World. The event aims to explore ideas and initiatives that promote unity and interconnectedness in today's globalized world."
+        },
+        {
+            question: "What are some important things to consider when attending a TEDx event like TEDxAUEB Pangea ?",
+            answer:
+                "Be prepared to listen: TEDx talks are all about ideas worth spreading, so be prepared to listen and engage with the speakers and their ideas."
+        },
+        {
+            question: "Who can attend the TEDxAUEB event Pangea?",
+            answer:
+                "Anyone who is interested in TEDx talks and the theme of the event can attend the TEDxAUEB event (Pangea). However, attendees are required to purchase a ticket in advance to secure their spot."
+        },
+        {
+            question: "Who are the speakers at the TEDxAUEB event Pangea?",
+            answer:
+                "The speakers at the TEDxAUEB event Pangea are experts and innovators from various fields, including technology, science, business, and the arts. Their talks will revolve around the theme of the event, exploring ways to reconnect our world and build a better future for all."
+        }
+    ];*/
+
+
+    const { id } = useParams();
+    const [faqs, setFaqs] = useState([]);
+
+    useEffect(() => {
+        axios.get(API_URL + `get_event_faq/${id}/`)
+            .then(response => {
+                setFaqs(response.data)
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }, []);
 
     const toggleQuestion = questionIndex => {
         if (activeQuestionIndex === questionIndex) setActiveQuestionIndex(null);
