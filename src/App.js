@@ -130,7 +130,7 @@ export default function App() {
           <Route path="/events/:categ_id" element={<EventsPage />} />
           <Route path="/event/:id" element={<Eventpage />} />
           <Route path="/volunteer/:id" element={<Volunteer />} />
-          <Route path="/volunteErevents" element={<VolunteerEvents />} />
+          <Route path="/volunteerEvents" element={<VolunteerEvents />} />
         </Routes>
       </Router>
     </>

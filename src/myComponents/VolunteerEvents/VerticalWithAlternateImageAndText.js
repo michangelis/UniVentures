@@ -1,10 +1,12 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import styled from "styled-components";
 import tw from "twin.macro";
 import { ReactComponent as SvgDotPatternIcon } from "../../images/dot-pattern.svg";
 import { SectionHeading as HeadingTitle } from "../../components/misc/Headings.js";
 import { Carousel } from 'react-responsive-carousel';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
+import axios from "axios";
+import {API_URL} from "../../api";
 
 const Container = tw.div`relative mt-16`;
 
@@ -54,11 +56,11 @@ const Caption = tw.div`bg-white text-2xl lg:text-3xl xl:text-4xl font-bold text-
 
 
 export default () => {
-  const cards = [
+  /*const cards = [
     {
       imageSrc:
         "https://images.unsplash.com/photo-1550699026-4114bbf4fb49?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=632&q=80",
-      subtitle: "Paid",
+      subtitle: ["Paid"],
       title: "Loachella, NYC",
       description:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
@@ -68,7 +70,7 @@ export default () => {
     {
       imageSrc:
         "https://images.unsplash.com/photo-1543423924-b9f161af87e4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80",
-      subtitle: "Free",
+      subtitle: ["Free"],
       title: "Rock In Rio, Upstate",
       description:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
@@ -78,13 +80,26 @@ export default () => {
     {
       imageSrc:
         "https://images.unsplash.com/photo-1509824227185-9c5a01ceba0d?ixlib=rb-1.2.1&auto=format&fit=crop&w=658&q=80",
-      subtitle: "Exclusive",
+      subtitle: ["Exclusive", "Free"],
       title: "Lollapalooza, Manhattan",
       description:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
       url: "https://timerse.com"
     }
-  ];
+  ];*/
+
+  const [cards, setCards] = useState([]);
+
+  useEffect(() => {
+    axios.get(API_URL + 'get_vol_events/')
+        .then(response => {
+          setCards(response.data)
+        })
+        .catch(error => {
+          console.log(error);
+        });
+  }, []);
+
 
   const images = [
     {imgSrc: "../../images/tedxathens.png"},
@@ -121,9 +136,9 @@ export default () => {
       </CarouselContainer>
       <SingleColumn>
         <HeadingInfoContainer>
-          <HeadingTitle>Popular Events</HeadingTitle>
+          <HeadingTitle>Volunteering Events</HeadingTitle>
           <HeadingDescription>
-            Here are some of the most popular events in New York City curated by professionals.
+            Join events and make a difference. Experience rewarding moments, meet inspiring people, and create lasting memories
           </HeadingDescription>
         </HeadingInfoContainer>
 
@@ -132,10 +147,12 @@ export default () => {
             <Card key={i} reversed={i % 2 === 1}>
               <Image imageSrc={card.imageSrc} />
               <Details>
-                <Subtitle>{card.subtitle}</Subtitle>
+                {card.subtitle.map((categ) => (
+                    <Subtitle>{categ}</Subtitle>
+                ))}
                 <Title>{card.title}</Title>
                 <Description>{card.description}</Description>
-                <Link href={card.url}>See Event Details</Link>
+                <Link href={`/volunteer/${card.id}`}>See Event Details</Link>
               </Details>
             </Card>
           ))}
