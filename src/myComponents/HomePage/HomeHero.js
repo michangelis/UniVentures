@@ -1,13 +1,16 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import styled from "styled-components";
 import tw from "twin.macro";
 //eslint-disable-next-line
 import { css } from "styled-components/macro";
 
-
 import { ReactComponent as SvgDecoratorBlob1 } from "../../images/svg-decorator-blob-1.svg";
 import AUEB from "../../images/aueb.jpeg"
 import Logo from "../../images/UniEventsLogo.png"
+import {useNavigate} from "react-router";
+import {filterEvents, search} from "../EventsPage/fakeEvents";
+import axios from "axios";
+import {API_URL} from "../../api";
 
 const Container = tw.div`relative`;
 const TwoColumn = tw.div`flex flex-col lg:flex-row lg:items-center max-w-screen-xl mx-auto py-20 md:py-24`;
@@ -45,6 +48,35 @@ const CustomersLogoStrip = styled.div`
 `;
 
 export default () => {
+
+    const navigate = useNavigate();
+    const [searchInput, setSearchInput] = useState("");
+    const [events, setEvents] = useState([]);
+
+
+    const handleSearch = () => {
+        const eventId = search(searchInput, events);
+        if(eventId !== null) {
+            navigate(`/event/${eventId}`);
+        } else {
+            console.log('Event not found');
+            // Here you can handle the case when the event is not found
+        }
+    };
+
+    useEffect(() => {
+        axios.get(API_URL + "get_events/")
+            .then(response => {
+                setEvents(response.data);
+            })
+            .catch(error => {
+                // Handle error
+                console.error("Error fetching options:", error);
+            });
+
+
+    }, []);
+
     return (
         <>
             <Container>
@@ -57,8 +89,13 @@ export default () => {
                             Learn everything you need to know for upcoming university events...
                         </Paragraph>
                         <Actions>
-                            <input type="text" placeholder="Search an Event" />
-                            <button>Go!</button>
+                            <input
+                                type="text"
+                                placeholder="Search an Event"
+                                value={searchInput}
+                                onChange={(e) => setSearchInput(e.target.value)}
+                            />
+                            <button onClick={handleSearch}>Go!</button>
                         </Actions>
                         <CustomersLogoStrip>
                             <p>University Partners</p>

@@ -95,10 +95,6 @@ export default ({ roundedHeaderButton = false, logoLink, links, className, colla
             </NavLink>
             <PrimaryLink css={roundedHeaderButton && tw`rounded-full`} href="/#">Sign Up</PrimaryLink>
         </NavLinks>,
-        <Actions key={2}>
-            <input type="text" placeholder="Search an Event" />
-            <button>Go!</button>
-        </Actions>
     ];
 
     const { showNavLinks, animation, toggleNavbar } = useAnimatedNavToggler();
@@ -118,9 +114,6 @@ export default ({ roundedHeaderButton = false, logoLink, links, className, colla
         <Header className={className || "header-light"}>
             <DesktopNavLinks css={collapseBreakpointCss.desktopNavLinks}>
                 {logoLink}
-                <SearchContainer>
-                    {links[1]}
-                </SearchContainer>
                 <LinksContainer>
                     {links[0]}
                 </LinksContainer>
@@ -129,7 +122,7 @@ export default ({ roundedHeaderButton = false, logoLink, links, className, colla
             <MobileNavLinksContainer css={collapseBreakpointCss.mobileNavLinksContainer}>
                 {logoLink}
                 <MobileNavLinks initial={{ x: "150%", display: "none" }} animate={animation} css={collapseBreakpointCss.mobileNavLinks}>
-                    {links}
+                    {links[0]}
                 </MobileNavLinks>
                 <NavToggle onClick={toggleNavbar} className={showNavLinks ? "open" : "closed"}>
                     {showNavLinks ? <CloseIcon tw="w-6 h-6" /> : <MenuIcon tw="w-6 h-6" />}

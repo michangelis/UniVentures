@@ -210,3 +210,12 @@ function isCurrentMonth(date) {
         date.getFullYear() === currentDate.getFullYear()
     );
 }
+
+export function search(input, events){
+    for(let i = 0; i < events.length; i++) {
+        if(events[i].name.toLowerCase() === input.toLowerCase()) {
+            return events[i].id;
+        }
+    }
+    return null;
+}

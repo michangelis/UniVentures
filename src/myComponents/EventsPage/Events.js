@@ -9,13 +9,13 @@ import { SectionHeading } from "components/misc/Headings";
 import {PrimaryButton as PrimaryButtonBase, PrimaryButton} from "components/misc/Buttons";
 import SelectCateg from "./SelectCateg";
 import {motion, AnimatePresence} from "framer-motion";
-import Nav from "./Nav";
+import Nav from "../Nav";
 import {ReactComponent as StarIcon} from "../../images/star-icon.svg";
 import {ReactComponent as SvgDecoratorBlob1} from "../../images/svg-decorator-blob-5.svg";
 import {ReactComponent as SvgDecoratorBlob2} from "../../images/svg-decorator-blob-7.svg";
-import {filterEvents, getEvents} from "./fakeEvents";
+import {filterEvents, search} from "./fakeEvents";
 import {Link} from "react-router-dom";
-import {useParams} from "react-router";
+import {useNavigate, useParams} from "react-router";
 import {API_URL} from "../../api";
 import axios from "axios";
 
@@ -42,6 +42,9 @@ const PostContainer = styled.div`
       }
     `}
 `;
+
+
+
 const Post = tw.div`cursor-pointer flex flex-col bg-gray-100 rounded-lg`;
 const Image = styled.div`
   ${props => css`background-image: url("${props.imageSrc}");`}
@@ -65,14 +68,23 @@ const Actions = styled.div`
     ${tw`w-full sm:absolute right-0 top-0 bottom-0 bg-primary-500 text-gray-100 font-bold mr-2 my-4 sm:my-2 rounded-full py-4 flex items-center justify-center sm:w-40 sm:leading-none focus:outline-none hover:bg-primary-900 transition duration-300`}
   }
 `;
-const TabsContainer = tw.div`sm:flex-row sm:flex-wrap h-full max-w-6xl`;
 
-    const TabsControl = tw.div`flex flex-col bg-primary-500 px-2 py-5 rounded leading-none mt-12 xl:mt-0 sm:flex-row sm:flex-wrap sm:h-auto sm:max-h-full`;
+const SearchContainer = styled.div`
+  ${tw`flex justify-center items-center w-full mb-4`}
+`;
+
+const TabsContainer = styled.div`
+  ${tw`sm:flex-row sm:flex-wrap h-full max-w-6xl`};
+  flex-direction: column-reverse;
+`;
 
     const TabControl = styled.div`
       ${tw`cursor-pointer px-6 py-3 mt-2 sm:mt-0 sm:mr-2 last:mr-0 text-gray-600 font-medium rounded-sm transition duration-300 text-sm sm:text-base text-center`}
       ${tw`h-12`}
     `;
+
+const TabsControl = tw.div`flex flex-col bg-primary-500 px-2 py-5 rounded leading-none mt-12 xl:mt-0 sm:flex-row sm:flex-wrap sm:h-auto sm:max-h-full mt-4`;
+
 const TabContent = tw(motion.div)`mt-6 flex flex-wrap sm:-mr-10 md:-mr-6 lg:-mr-12`;
 
 const CardContainer = tw.div`mt-10 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 sm:pr-10 md:pr-6 lg:pr-12`;
@@ -189,9 +201,22 @@ export default function Events(){
     const [selectedCategory, setSelectedCategory] = useState(initialOption);
     const [selectedLocation, setSelectedLocation] = useState("");
     const [selectedTime, setSelectedTime] = useState("");
-
-
+    const [searchInput, setSearchInput] = useState("");
     const selectedEvents = filterEvents(events, selectedCategory, selectedLocation, selectedTime);
+
+    const navigate = useNavigate();
+
+    const handleSearch = () => {
+        const eventId = search(searchInput, events);
+        if(eventId !== null) {
+            navigate(`/event/${eventId}`);
+        } else {
+            console.log('Event not found');
+            // Here you can handle the case when the event is not found
+        }
+    };
+
+
 
     return (
         <AnimationRevealPage>
@@ -199,6 +224,18 @@ export default function Events(){
             <Container>
                 <ContentWithPaddingXl>
                     <div style={{paddingTop:"20px"}}>
+                        <SearchContainer>
+                            <Actions>
+                                <input
+                                    type="text"
+                                    placeholder="Search an Event"
+                                    value={searchInput}
+                                    onChange={(e) => setSearchInput(e.target.value)}
+                                />
+                                <button onClick={handleSearch}>Go!</button>
+                            </Actions>
+                        </SearchContainer>
+
                         <TabsContainer>
                         <TabsControl>
                             <div tw="flex-grow">
