@@ -106,6 +106,7 @@ export default ({
 
     const [sliderRef, setSliderRef] = useState(null);
     const [volOptions, setVolOptions] = useState([]);
+    const [testimonials, setTestimonials] = useState([]);
     const { id } = useParams();
     console.log(id);
 
@@ -117,12 +118,19 @@ export default ({
             .catch(error => {
                 console.log(error);
             });
+        axios.get(API_URL + `get_testimonials/${id}/`)
+            .then(response => {
+                setTestimonials(response.data)
+            })
+            .catch(error => {
+                console.log(error);
+            });
     }, []);
 
     const [selectedVolOptions, setSelectedVolOptions] = useState("");
 
 
-    const testimonials = [
+  /*  const testimonials = [
         {
             profileImageSrc:
                 "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3.25&w=512&h=512&q=80",
@@ -139,7 +147,7 @@ export default ({
             customerName: "Adam Cuppy",
             customerTitle: "Website, Coordinator"
         }
-    ];
+    ];*/
 
     return (
         <Container>
