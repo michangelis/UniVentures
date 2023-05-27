@@ -6,6 +6,7 @@ import logo from "../images/logo.svg";
 import { ReactComponent as FacebookIcon } from "../images/facebook-icon.svg";
 import { ReactComponent as TwitterIcon } from "../images/twitter-icon.svg";
 import { ReactComponent as YoutubeIcon } from "../images/youtube-icon.svg";
+import {NavLink, NavLinks} from "./Nav";
 
 
 const Container = tw(ContainerBase)`bg-gray-900 text-gray-100 -mx-8 -mb-8`
@@ -36,14 +37,13 @@ export default () => {
                 <Row>
                     <LogoContainer>
                         <LogoImg src={logo} />
-                        <LogoText>Treact</LogoText>
+                        <LogoText>UniVentures</LogoText>
                     </LogoContainer>
                     <LinksContainer>
-                        <Link href="#">Home</Link>
-                        <Link href="#">About</Link>
-                        <Link href="#">Contact Us</Link>
-                        <Link href="#">Blog</Link>
-                        <Link href="#">Reviews</Link>
+                        <Link href="/home">Home</Link>
+                        <Link href="/events">Events</Link>
+                        <Link href="/volunteerEvents">Volunteer</Link>
+                        <Link href="/#">About Us</Link>
                     </LinksContainer>
                     <SocialLinksContainer>
                         <SocialLink href="https://facebook.com">
@@ -57,7 +57,7 @@ export default () => {
                         </SocialLink>
                     </SocialLinksContainer>
                     <CopyrightText>
-                        &copy; Copyright 2023, UniEvents Inc. All Rights Reserved.
+                        &copy; Copyright 2023, UniVentures Inc. All Rights Reserved.
                     </CopyrightText>
                 </Row>
             </Content>
