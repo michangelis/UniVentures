@@ -15,6 +15,7 @@ import SelectCateg from "../EventsPage/SelectCateg";
 import {useParams} from "react-router";
 import axios from "axios";
 import {API_URL} from "../../api";
+import {useCookies} from "react-cookie";
 
 const Row = tw.div`flex flex-col md:flex-row justify-between items-center`;
 const Column = tw.div`w-full max-w-md mx-auto md:max-w-none md:mx-0`;
@@ -108,6 +109,15 @@ export default ({
     const [volOptions, setVolOptions] = useState([]);
     const [testimonials, setTestimonials] = useState([]);
     const { id } = useParams();
+
+    const [cookies] = useCookies(["user"]);
+    const [userId, setUserId] = useState(undefined); // Initialize userId state as undefined
+
+    useEffect(() => {
+        setUserId(cookies.user);
+    }, [cookies.user]);
+
+
     console.log(id);
 
     useEffect(() => {
@@ -154,15 +164,22 @@ export default ({
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        // send the data to the server
-            axios.post(API_URL + 'volunteer/', {
-            selectedVolOptions: [selectedVolOptions],
-            message: message,
-        }).then(response => {
-            console.log(response.data);
-        }).catch(error => {
-            console.error("Error posting data:", error);
-        });
+
+        if (userId !== undefined){
+            // send the data to the server
+                axios.post(API_URL + 'volunteer/', {
+                user_id: userId,
+                selectedVolOptions: [selectedVolOptions],
+                message: message,
+            }).then(response => {
+                console.log(response.data);
+            }).catch(error => {
+                console.error("Error posting data:", error);
+            });
+        } else {
+            window.location.href = '/login';
+        }
+
     }
 
     return (
