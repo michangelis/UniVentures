@@ -110,6 +110,7 @@ import Volunteer from "./myComponents/VolunteerPage/Volunteer";
 import VolunteerEvents from "./myComponents/VolunteerEvents/VolunteerEvents";
 import SignUp from "./myComponents/SignUp";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Login from "./myComponents/Login";
 
 export default function App() {
   // If you want to disable the animation just use the disabled `prop` like below on your page's component
@@ -132,6 +133,7 @@ export default function App() {
           <Route path="/volunteer/:id" element={<Volunteer />} />
           <Route path="/volunteerEvents" element={<VolunteerEvents />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
       </Router>
     </>

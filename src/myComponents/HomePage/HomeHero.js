@@ -6,7 +6,7 @@ import { css } from "styled-components/macro";
 
 import { ReactComponent as SvgDecoratorBlob1 } from "../../images/svg-decorator-blob-1.svg";
 import AUEB from "../../images/aueb.jpeg"
-import Logo from "../../images/UniEventsLogo.png"
+import Logo from "../../images/univ.png"
 import {useNavigate} from "react-router";
 import {filterEvents, search} from "../EventsPage/fakeEvents";
 import axios from "axios";

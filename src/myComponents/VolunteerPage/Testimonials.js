@@ -128,26 +128,42 @@ export default ({
     }, []);
 
     const [selectedVolOptions, setSelectedVolOptions] = useState("");
+    const [message, setMessage] = useState("");
 
 
-  /*  const testimonials = [
-        {
-            profileImageSrc:
-                "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3.25&w=512&h=512&q=80",
-            heading: "Amazing Volunteering Experience",
-            quote:"TEDxAUEB offers an exceptional experience with diverse speakers sharing inspiring ideas worth spreading. Attendees can connect with like-minded individuals, participate in interactive workshops, and explore new ideas. With high production value and attention to detail, TEDxAUEB ensures a seamless and memorable experience.",
-            customerName: "Charlotte Hale",
-            customerTitle: "TEDxAUEB event Orginizer"
-        },
-        {
-            profileImageSrc:
-                "https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.25&w=512&h=512&q=80",
-            heading: "Talk with amazing companies that helped organize the event",
-            quote: "Speaking with the amazing companies that helped organize the TEDxAUEB event can offer insights into their roles and contributions. It allows for understanding of how their expertise, resources, and innovation helped bring the event to life, and how they aligned with the event's values and vision.",
-            customerName: "Adam Cuppy",
-            customerTitle: "Website, Coordinator"
-        }
-    ];*/
+
+
+    /*  const testimonials = [
+          {
+              profileImageSrc:
+                  "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3.25&w=512&h=512&q=80",
+              heading: "Amazing Volunteering Experience",
+              quote:"TEDxAUEB offers an exceptional experience with diverse speakers sharing inspiring ideas worth spreading. Attendees can connect with like-minded individuals, participate in interactive workshops, and explore new ideas. With high production value and attention to detail, TEDxAUEB ensures a seamless and memorable experience.",
+              customerName: "Charlotte Hale",
+              customerTitle: "TEDxAUEB event Orginizer"
+          },
+          {
+              profileImageSrc:
+                  "https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.25&w=512&h=512&q=80",
+              heading: "Talk with amazing companies that helped organize the event",
+              quote: "Speaking with the amazing companies that helped organize the TEDxAUEB event can offer insights into their roles and contributions. It allows for understanding of how their expertise, resources, and innovation helped bring the event to life, and how they aligned with the event's values and vision.",
+              customerName: "Adam Cuppy",
+              customerTitle: "Website, Coordinator"
+          }
+      ];*/
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        // send the data to the server
+            axios.post(API_URL + 'volunteer/', {
+            selectedVolOptions: selectedVolOptions,
+            message: message,
+        }).then(response => {
+            console.log(response.data);
+        }).catch(error => {
+            console.error("Error posting data:", error);
+        });
+    }
 
     return (
         <Container>
@@ -158,7 +174,7 @@ export default ({
                             {subh && <Subheading>{subh}</Subheading>}
                             <Heading>{head}</Heading>
                             {description && <Description>{description}</Description>}
-                            <Form action={formAction} method={formMethod}>
+                            <Form onSubmit={handleSubmit}>
                                 <TabControl>
                                     <SelectCateg
                                         title="Position"
@@ -166,8 +182,9 @@ export default ({
                                         setSelectedOption={setSelectedVolOptions}
                                         isMulti={false}
                                     />
-                                </TabControl>                                <Txtarea name="message" placeholder="Your Message Here" />
-                                <SubmitButton type="submit">{submitButtonText}</SubmitButton>
+                                </TabControl>
+                                <Txtarea name="message" placeholder="Your Message Here" value={message} onChange={(e) => setMessage(e.target.value)}/>
+                                <SubmitButton type="submit" >{submitButtonText}</SubmitButton>
                             </Form>
                         </TextContent>
                     </TextColumn>

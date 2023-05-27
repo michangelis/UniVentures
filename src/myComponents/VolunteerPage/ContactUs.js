@@ -34,30 +34,35 @@ const Textarea = styled(Input).attrs({as: "textarea"})`
 
 const SubmitButton = tw(PrimaryButtonBase)`inline-block mt-8`
 
-export default ({
-                    subheading = "Contact Us",
-                    heading = <>Feel free to <span tw="text-primary-500">get in touch</span><wbr/> with us.</>,
-                    description = "Register for position you want to be a part of and tell us why you want to be a part of this experience",
-                    submitButtonText = "Volunteer",
-                    formAction = "#",
-                    formMethod = "get",
-                    textOnLeft = true,
-                }) => {
+export default () => {
+
+    const pageData = {
+        subheading: "Contact Us",
+        heading: <>Feel free to <span tw="text-primary-500">get in touch</span><wbr/> with us.</>,
+        description: "Register for position you want to be a part of and tell us why you want to be a part of this experience",
+        submitButtonText: "Volunteer",
+        formAction: "#",
+        formMethod: "get",
+        textOnLeft: true,
+    }
+
+
+
 
     return (
         <Container>
             <TwoColumn>
-                <TextColumn textOnLeft={textOnLeft}>
+                <TextColumn textOnLeft={pageData.textOnLeft}>
                     <TextContent>
-                        {subheading && <Subheading>{subheading}</Subheading>}
-                        <Heading>{heading}</Heading>
-                        {description && <Description>{description}</Description>}
-                        <Form action={formAction} method={formMethod}>
+                        {pageData.subheading && <Subheading>{pageData.subheading}</Subheading>}
+                        <Heading>{pageData.heading}</Heading>
+                        {pageData.description && <Description>{pageData.description}</Description>}
+                        <Form action={pageData.formAction} method={pageData.formMethod}>
                             <Input type="email" name="email" placeholder="Your Email Address" />
                             <Input type="text" name="name" placeholder="Full Name" />
                             <Input type="text" name="subject" placeholder="Subject" />
                             <Textarea name="message" placeholder="Your Message Here" />
-                            <SubmitButton type="submit">{submitButtonText}</SubmitButton>
+                            <SubmitButton type="submit">{pageData.submitButtonText}</SubmitButton>
                         </Form>
                     </TextContent>
                 </TextColumn>

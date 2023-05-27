@@ -50,7 +50,7 @@ const SubmitButton = styled.button`
 `;
 const IllustrationContainer = tw.div`sm:rounded-r-lg flex-1 bg-purple-100 text-center hidden lg:flex justify-center`;
 const IllustrationImage = styled.div`
-  ${props => `background-image: url("${pageData.imageSrc}");`}
+  ${pageData => `background-image: url("${pageData.imageSrc}");`}
   ${tw`m-12 xl:m-16 w-full max-w-lg bg-contain bg-center bg-no-repeat`}
 `;
 
@@ -66,7 +66,7 @@ const pageData = {
     submitButtonText: "Sign Up",
     tosUrl: "#",
     privacyPolicyUrl: "#",
-    signInUrl: "#"
+    signInUrl: "/login"
 }
 
 export default function SignUP() {
@@ -127,7 +127,7 @@ export default function SignUP() {
         <Container>
             <Content>
                 <MainContainer>
-                    <LogoLink href={pageData.logoLinkUrl}>
+                    <LogoLink href="/home">
                         <LogoImage src={logo} />
                     </LogoLink>
                     <MainContent>

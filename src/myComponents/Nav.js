@@ -76,7 +76,7 @@ export default ({ roundedHeaderButton = false, logoLink, links, className, colla
             <NavLink href="/events">Events</NavLink>
             <NavLink href="/volunteerEvents">Volunteer</NavLink>
             <NavLink href="/#">About Us</NavLink>
-            <NavLink href="/#" tw="lg:ml-12!">
+            <NavLink href="/login" tw="lg:ml-12!">
                 Login
             </NavLink>
             <PrimaryLink css={roundedHeaderButton && tw`rounded-full`} href="/signup">Sign Up</PrimaryLink>
@@ -89,7 +89,7 @@ export default ({ roundedHeaderButton = false, logoLink, links, className, colla
     const defaultLogoLink = (
         <LogoLink href="/">
             <img src={logo} alt="logo" />
-            Treact
+            UniVentures
         </LogoLink>
     );
 
