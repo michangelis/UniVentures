@@ -156,7 +156,7 @@ export default ({
         event.preventDefault();
         // send the data to the server
             axios.post(API_URL + 'volunteer/', {
-            selectedVolOptions: selectedVolOptions,
+            selectedVolOptions: [selectedVolOptions],
             message: message,
         }).then(response => {
             console.log(response.data);

@@ -3,6 +3,7 @@ import styled from "styled-components";
 import tw from "twin.macro";
 //eslint-disable-next-line
 import { css } from "styled-components/macro";
+import { CookiesProvider, useCookies } from "react-cookie";
 
 import { ReactComponent as SvgDecoratorBlob1 } from "../../images/svg-decorator-blob-1.svg";
 import AUEB from "../../images/aueb.jpeg"
@@ -52,6 +53,7 @@ export default () => {
     const navigate = useNavigate();
     const [searchInput, setSearchInput] = useState("");
     const [events, setEvents] = useState([]);
+
 
 
     const handleSearch = () => {

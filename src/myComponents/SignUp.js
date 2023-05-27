@@ -10,6 +10,7 @@ import { ReactComponent as SubmitButtonIcon } from "feather-icons/dist/icons/use
 import SelectCateg from "./EventsPage/SelectCateg";
 import axios from "axios";
 import {API_URL} from "../api";
+import {useNavigate} from "react-router";
 
 const Container = tw(ContainerBase)`min-h-screen bg-primary-900 text-white font-medium flex justify-center -m-8`;
 const Content = tw.div`max-w-screen-xl m-0 sm:mx-20 sm:my-16 bg-white text-gray-900 shadow sm:rounded-lg flex justify-center flex-1`;
@@ -101,6 +102,8 @@ export default function SignUP() {
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const navigate = useNavigate();
+
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -114,6 +117,7 @@ export default function SignUP() {
             uni: selectedUni
         }).then(response => {
             console.log(response.data);
+            window.location.href = '/login'; // Update navigation here
         }).catch(error => {
             console.error("Error posting data:", error);
         });

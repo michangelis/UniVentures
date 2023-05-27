@@ -11,6 +11,7 @@ import twitterIconImageSrc from "../images/twitter-icon.png";
 import { ReactComponent as SubmitButtonIcon } from "feather-icons/dist/icons/log-in.svg";
 import axios from "axios";
 import {API_URL} from "../api";
+import { CookiesProvider, useCookies } from "react-cookie";
 
 const Container = tw(ContainerBase)`min-h-screen bg-primary-900 text-white font-medium flex justify-center -m-8`;
 const Content = tw.div`max-w-screen-xl m-0 sm:mx-20 sm:my-16 bg-white text-gray-900 shadow sm:rounded-lg flex justify-center flex-1`;
@@ -80,6 +81,8 @@ const pageData = {
 
 export default function Login(){
 
+    const [cookies, setCookie] = useCookies(["user"]);
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -91,6 +94,8 @@ export default function Login(){
             password: password,
         }).then(response => {
             console.log(response.data);
+            setCookie("user", response.data.id, { path: "/" });
+            window.location.href = '/home';
         }).catch(error => {
             console.error("Error posting data:", error);
         });
