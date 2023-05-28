@@ -125,11 +125,22 @@ const DecoratorBlob2 = styled(SvgDecoratorBlob2)`
 
 export default function Events(){
 
+
+    const { categ_id } = useParams();
+    const [initialOption, setInitialOption] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState("");
+
+
     useEffect(() => {
         // Fetch options data
         axios.get(API_URL + "get_all_categories/")
             .then(response => {
                 setCategOptions(response.data);
+                if (categ_id !== undefined) {
+                    const initialOption = response.data.find(option => option.value === categ_id);
+                    setInitialOption(initialOption);
+                    setSelectedCategory([initialOption]);
+                }
             })
             .catch(error => {
                 // Handle error
@@ -188,23 +199,15 @@ export default function Events(){
     ];*/
 
 
-    const { categ_id } = useParams();
-    let initialOption = "";
-    console.log(categ_id);
-
-    if (categ_id !== undefined) {
-        initialOption = [categOptions.find(option => option.value === categ_id)];
-    }
-
-    console.log(initialOption); // Check if the initialOption is defined or not
-
-    const [selectedCategory, setSelectedCategory] = useState(initialOption);
     const [selectedLocation, setSelectedLocation] = useState("");
     const [selectedTime, setSelectedTime] = useState("");
     const [searchInput, setSearchInput] = useState("");
     const selectedEvents = filterEvents(events, selectedCategory, selectedLocation, selectedTime);
 
     const navigate = useNavigate();
+
+
+    console.log(initialOption); // Check if the initialOption is defined or not
 
     const handleSearch = () => {
         const eventId = search(searchInput, events);
@@ -215,6 +218,7 @@ export default function Events(){
             // Here you can handle the case when the event is not found
         }
     };
+
 
 
 
@@ -245,6 +249,7 @@ export default function Events(){
                                         options={categOptions}
                                         setSelectedOption={setSelectedCategory}
                                         isMulti={true}
+                                        selectedOption={selectedCategory} // <-- pass it here
                                     />
                                 </TabControl>
                             </div>
@@ -315,7 +320,9 @@ export default function Events(){
                                         </CardHoverOverlay>
                                     </CardImageContainer>
                                     <CardText>
-                                        <CardTitle>{card.name}</CardTitle>
+                                        <Link to={{pathname: `/event/${card.id}`}} style={{textDecoration: "none"}}>
+                                            <CardTitle>{card.name}</CardTitle>
+                                        </Link>
                                         <CardContent>{card.location}</CardContent>
                                     </CardText>
                                 </Card>

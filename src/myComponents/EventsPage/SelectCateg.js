@@ -53,6 +53,7 @@ const SelectCateg = ({ isMulti = false, ...props }) => {
 
 
 
+
     const handleChange = (selectedOption, actionMeta) => {
         props.setSelectedOption(selectedOption);
     };
@@ -69,6 +70,7 @@ const SelectCateg = ({ isMulti = false, ...props }) => {
             isMulti = {isMulti}
             styles={customStyles}
             placeholder={props.title}
+            value={props.selectedOption} // <-- use value here
         />
     );
 };
