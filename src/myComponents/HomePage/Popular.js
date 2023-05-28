@@ -12,6 +12,7 @@ import { ReactComponent as ChevronRightIcon } from "feather-icons/dist/icons/che
 import {Link} from "react-router-dom";
 import axios from "axios";
 import {API_URL} from "../../api";
+import {useCookies} from "react-cookie";
 
 const Container = tw.div`relative`;
 const Content = tw.div`max-w-screen-xl mx-auto py-16 lg:py-20`;
@@ -99,10 +100,22 @@ export default function Popular() {
         ]
     };
 
+    const [cookies, setCookie] = useCookies(["user"]);
+    const [userId, setUserId] = useState(cookies.user); // Initialize userId state as undefined
+
+    useEffect(() => {
+        setUserId(cookies.user);
+    }, [cookies.user]);
+
+
+    console.log(userId);
+
     const [events, setEvents] = useState([]);
 
     useEffect(() => {
-        axios.get(API_URL + 'get_popular/')
+        axios.post(API_URL + 'get_popular/', {
+            'user_id': userId
+        })
             .then(response => {
                 setEvents(response.data)
             })
@@ -110,6 +123,7 @@ export default function Popular() {
                 console.log(error);
             });
     }, []);
+
 
 
 

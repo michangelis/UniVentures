@@ -52,8 +52,6 @@ const SelectCateg = ({ isMulti = false, ...props }) => {
 
 
 
-
-
     const handleChange = (selectedOption, actionMeta) => {
         props.setSelectedOption(selectedOption);
     };
