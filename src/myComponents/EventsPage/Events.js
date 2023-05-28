@@ -18,6 +18,7 @@ import {Link} from "react-router-dom";
 import {useNavigate, useParams} from "react-router";
 import {API_URL} from "../../api";
 import axios from "axios";
+import {useCookies} from "react-cookie";
 
 const HeadingRow = tw.div`flex`;
 const Heading = tw(SectionHeading)`text-gray-900`;
@@ -218,6 +219,8 @@ export default function Events(){
             // Here you can handle the case when the event is not found
         }
     };
+
+
 
 
 

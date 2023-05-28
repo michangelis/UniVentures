@@ -44,7 +44,7 @@ const CardImage = styled.div(props => [
     tw`w-full h-56 sm:h-64 bg-cover bg-center rounded sm:rounded-none sm:rounded-tl-4xl`
 ]);
 
-const TextInfo = tw.div`py-6 sm:px-10 sm:py-6`;
+const TextInfo = tw.div`py-6 sm:px-10 sm:py-6 flex flex-col flex-grow`;
 const TitleReviewContainer = tw.div`flex flex-col sm:flex-row sm:justify-between sm:items-center`;
 const Title = tw.h5`text-2xl font-bold`;
 
@@ -131,7 +131,7 @@ export default function Popular() {
         <Container>
             <Content>
                 <HeadingWithControl>
-                    <Heading>Popular Events</Heading>
+                    <Heading>Popular Events For You</Heading>
                     <Controls>
                         <PrevButton onClick={sliderRef?.slickPrev}><ChevronLeftIcon/></PrevButton>
                         <NextButton onClick={sliderRef?.slickNext}><ChevronRightIcon/></NextButton>

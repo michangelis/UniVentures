@@ -20,6 +20,7 @@ import SelectCateg from "../EventsPage/SelectCateg";
 import {useParams} from "react-router";
 import axios from "axios";
 import {API_URL} from "../../api";
+import {useCookies} from "react-cookie";
 
 
 const Container = tw.div`relative`;
@@ -115,6 +116,16 @@ export default ({ roundedHeaderButton }) => {
 
     const [selectedLocation, setSelectedLocation] = useState("");
 
+    const [cookies, setCookie] = useCookies(["user"]);
+    const [userId, setUserId] = useState(cookies.user); // Initialize userId state as undefined
+
+    useEffect(() => {
+        setUserId(cookies.user);
+    }, [cookies.user]);
+
+
+    console.log(userId);
+
     const pageData = [
         {
             primaryButtonText:"Volunteer",
@@ -127,6 +138,24 @@ export default ({ roundedHeaderButton }) => {
 
     console.log(selectedLocation.value);
 
+    const postData = async () => {
+        if (selectedLocation.value) { // Only post data when selectedLocation.value is not empty
+            try {
+                const response = await axios.post(API_URL + 'post_rating/', {
+                    user_id: userId,
+                    event_id: id,
+                    rating: selectedLocation.value,
+                });
+                console.log(response.data);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+    };
+
+    useEffect(() => {
+        postData().then(r => console.log(r));
+    }, [selectedLocation, userId]);
 
 
     return (
