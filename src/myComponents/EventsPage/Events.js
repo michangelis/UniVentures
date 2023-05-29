@@ -222,9 +222,6 @@ export default function Events(){
 
 
 
-
-
-
     return (
         <AnimationRevealPage>
             <Nav />

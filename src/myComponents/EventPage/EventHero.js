@@ -97,34 +97,53 @@ export default ({ roundedHeaderButton }) => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [event, setEvent] = useState(false);
 
+
     const toggleModal = () => setModalIsOpen(!modalIsOpen);
     const locationOptions = [
         { value: 5, label: "Yes" },
         { value: 3, label: "Maybe" },
         { value: 1, label: "No" },
     ];
+    const [initialOption, setInitialOption] = useState([]);
+
+    const [selectedLocation, setSelectedLocation] = useState("");
+
+    const [cookies] = useCookies(["user"]);
+    const [userId, setUserId] = useState(cookies.user); // Initialize userId state as undefined
+
 
     useEffect(() => {
+        setUserId(cookies.user);
         axios.get(API_URL + `get_event/${id}/`)
             .then(response => {
                 setEvent(response.data)
             })
             .catch(error => {
-                console.log(error);
-            });
+                    console.log(error);
+                }
+            );
+        if(userId && id) {
+            axios.get(API_URL + 'get_rating/', {
+                params: {
+                    'user_id': userId,
+                    'event_id': id
+                }
+            })
+                .then(response => {
+                    const ratingValue = response.data.rating;
+                    // Find the corresponding option that has the same value
+                    const correspondingOption = locationOptions.find(option => option.value === ratingValue);
+                    setSelectedLocation(correspondingOption);
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+
+        }
     }, []);
 
-    const [selectedLocation, setSelectedLocation] = useState("");
-
-    const [cookies, setCookie] = useCookies(["user"]);
-    const [userId, setUserId] = useState(cookies.user); // Initialize userId state as undefined
-
-    useEffect(() => {
-        setUserId(cookies.user);
-    }, [cookies.user]);
 
 
-    console.log(userId);
 
     const pageData = [
         {
@@ -136,7 +155,6 @@ export default ({ roundedHeaderButton }) => {
         }
     ];
 
-    console.log(selectedLocation.value);
 
     const postData = async () => {
         if (selectedLocation.value) { // Only post data when selectedLocation.value is not empty
@@ -156,6 +174,9 @@ export default ({ roundedHeaderButton }) => {
     useEffect(() => {
         postData().then(r => console.log(r));
     }, [selectedLocation, userId]);
+
+    console.log(initialOption)
+
 
 
     return (
@@ -187,6 +208,7 @@ export default ({ roundedHeaderButton }) => {
                                         options={locationOptions}
                                         setSelectedOption={setSelectedLocation}
                                         isMulti={false}
+                                        selectedOption={selectedLocation} // <-- pass it here
                                     />
                                 </IconText>
                             </IconBox>
