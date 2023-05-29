@@ -1,5 +1,7 @@
 import React from "react";
 import GlobalStyles from 'styles/GlobalStyles';
+import { Helmet } from 'react-helmet';
+
 import { css } from "styled-components/macro"; //eslint-disable-line
 
 /*
@@ -119,6 +121,9 @@ export default function App() {
 
   return (
     <>
+      <Helmet>
+        <title>UniVentures</title> {/* Set the desired title here */}
+      </Helmet>
       <GlobalStyles />
       <Router>
         <Routes>
