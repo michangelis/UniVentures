@@ -7,6 +7,7 @@ import { CookiesProvider, useCookies } from "react-cookie";
 
 import { ReactComponent as SvgDecoratorBlob1 } from "../../images/svg-decorator-blob-1.svg";
 import AUEB from "../../images/aueb.jpeg"
+import NTUA from "../../images/ntua200.png"
 import Logo from "../../images/univ.png"
 import {useNavigate} from "react-router";
 import {filterEvents, search} from "../EventsPage/fakeEvents";
@@ -29,6 +30,11 @@ const Actions = styled.div`
   button {
     ${tw`w-full sm:absolute right-0 top-0 bottom-0 bg-primary-500 text-gray-100 font-bold mr-2 my-4 sm:my-2 rounded-full py-4 flex items-center justify-center sm:w-40 sm:leading-none focus:outline-none hover:bg-primary-900 transition duration-300`}
   }
+`;
+
+
+const NTUALogoContainer = styled.div`
+  ${tw`w-64`}
 `;
 
 const IllustrationContainer = tw.div`flex justify-center lg:justify-end items-center`;
@@ -101,7 +107,10 @@ export default () => {
                         </Actions>
                         <CustomersLogoStrip>
                             <p>University Partners</p>
-                            <img src={AUEB} alt="Our Customers" />
+                            <img src={AUEB} alt="Our Customers"/>
+                            <NTUALogoContainer>
+                                <img src={NTUA} alt="Our Customers" />
+                            </NTUALogoContainer>
                         </CustomersLogoStrip>
                     </LeftColumn>
                     <RightColumn>
