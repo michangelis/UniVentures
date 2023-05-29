@@ -207,6 +207,15 @@ export default function Events(){
 
     const navigate = useNavigate();
 
+    const [openDropdown, setOpenDropdown] = useState(null); // Track which dropdown is open
+
+    // Other functions and useEffect hooks...
+
+    const handleDropdownOpen = (dropdownName) => {
+        setOpenDropdown(openDropdown === dropdownName ? null : dropdownName);
+    };
+
+
 
     console.log(initialOption); // Check if the initialOption is defined or not
 
@@ -241,39 +250,45 @@ export default function Events(){
                         </SearchContainer>
 
                         <TabsContainer>
-                        <TabsControl>
-                            <div tw="flex-grow">
-                                <TabControl>
-                                    <SelectCateg
-                                        title="Category"
-                                        options={categOptions}
-                                        setSelectedOption={setSelectedCategory}
-                                        isMulti={true}
-                                        selectedOption={selectedCategory} // <-- pass it here
-                                    />
-                                </TabControl>
-                            </div>
-                            <div tw="flex-grow">
-                                <TabControl>
-                                    <SelectCateg
-                                        title="Time"
-                                        options={timeOptions}
-                                        setSelectedOption={setSelectedTime}
-                                        isMulti={false}
-                                    />
-                                </TabControl>
-                            </div>
-                            <div tw="flex-grow">
-                                <TabControl>
-                                    <SelectCateg
-                                        title="Location"
-                                        options={locationOptions}
-                                        setSelectedOption={setSelectedLocation}
-                                        isMulti={true}
-                                    />
-                                </TabControl>
-                            </div>
-                        </TabsControl>
+                            <TabsControl>
+                                <div tw="flex-grow">
+                                    <TabControl>
+                                        <SelectCateg
+                                            title="Category"
+                                            options={categOptions}
+                                            setSelectedOption={setSelectedCategory}
+                                            isMulti={true}
+                                            selectedOption={selectedCategory} // <-- pass it here
+                                            onMenuOpen={() => handleDropdownOpen('category')}
+                                            menuIsOpen={openDropdown === 'category'}
+                                        />
+                                    </TabControl>
+                                </div>
+                                <div tw="flex-grow">
+                                    <TabControl>
+                                        <SelectCateg
+                                            title="Time"
+                                            options={timeOptions}
+                                            setSelectedOption={setSelectedTime}
+                                            isMulti={false}
+                                            onMenuOpen={() => handleDropdownOpen('time')}
+                                            menuIsOpen={openDropdown === 'time'}
+                                        />
+                                    </TabControl>
+                                </div>
+                                <div tw="flex-grow">
+                                    <TabControl>
+                                        <SelectCateg
+                                            title="Location"
+                                            options={locationOptions}
+                                            setSelectedOption={setSelectedLocation}
+                                            isMulti={true}
+                                            onMenuOpen={() => handleDropdownOpen('location')}
+                                            menuIsOpen={openDropdown === 'location'}
+                                        />
+                                    </TabControl>
+                                </div>
+                            </TabsControl>
                         </TabsContainer>
                     </div>
                     <AnimatePresence>
