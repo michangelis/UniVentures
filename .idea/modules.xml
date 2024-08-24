@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/treact.iml" filepath="$PROJECT_DIR$/.idea/treact.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/UniVentures.iml" filepath="$PROJECT_DIR$/.idea/UniVentures.iml" />
     </modules>
   </component>
 </project>
